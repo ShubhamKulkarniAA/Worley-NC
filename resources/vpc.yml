@@ -4,9 +4,10 @@ Description: VPC stack with public and private subnets, route tables, NAT gatewa
 Parameters:
   VpcCIDR:
     Type: String
-  Prefix:
+
+  EnvironmentName:
     Type: String
-    
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -14,4 +15,6 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub 'worley-nc-$(Prefix)'
+          Value: !Sub '${EnvironmentName}-vpc'
+
+ 
