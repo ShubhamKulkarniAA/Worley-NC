@@ -4,8 +4,6 @@ Description: Main stack template
 Parameters:
   VpcCIDR:
     Type: String
-  Name:
-    Type: String
   EnvironmentName:
     Type: String
 
@@ -16,6 +14,5 @@ Resources:
     Properties:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
-        Name: !Ref Name
         VpcCIDR: !Ref VpcCIDR
         EnvironmentName: !Ref EnvironmentName
