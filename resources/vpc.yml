@@ -15,4 +15,3 @@ Resources:
         - Key: Name
           Value: !Sub '$(Name)-Vpc'
 
- 
