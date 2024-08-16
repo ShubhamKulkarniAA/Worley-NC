@@ -40,13 +40,3 @@ Resources:
         AvailabilityZone1: !Ref AvailabilityZone1
         AvailabilityZone2: !Ref AvailabilityZone2
         EnvironmentName: !Ref EnvironmentName
-
-  NestedVPCFlowLogsStack:
-    DependsOn:
-         - NestedVPCStack
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/my-demo-s3-bucket-test-project-18/flowlogs.yml'
-      Parameters:
-        Name: !Ref Name
-        S3BucketName: !Ref S3BucketName
