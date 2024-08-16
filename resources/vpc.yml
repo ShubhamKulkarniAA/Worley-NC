@@ -4,8 +4,6 @@ Description: VPC stack with public and private subnets, route tables, NAT gatewa
 Parameters:
   VpcCIDR:
     Type: String
-  EnvironmentName:
-    Type: String
   Name:
     Type: String
     
@@ -16,4 +14,4 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub '$(Name)-Vpc-${EnvironmentName}'
+          Value: !Sub '$(Name)-Vpc'
