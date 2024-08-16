@@ -13,9 +13,9 @@ Parameters:
 Resources:
 
   NestedVPCStack:
-    Type: AWS::Serverless::Application
+    Type: AWS::CloudFormation::Stack
     Properties:
-      Location: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yaml'
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yaml'
       Parameters:
         Name: !Ref Name
         VpcCIDR: !Ref VpcCIDR
