@@ -15,6 +15,7 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
+      Region: ap-south-1
       Tags:
         - Key: Name
           Value: !Sub '$(Name)-Vpc-${EnvironmentName}'
