@@ -4,9 +4,8 @@ Description: Main stack template
 Parameters:
   VpcCIDR:
     Type: String
-  EnvironmentName:
+  vpcname:
     Type: String
-
 Resources:
 
    NestedVPCStack:
@@ -15,4 +14,4 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
         VpcCIDR: !Ref VpcCIDR
-        EnvironmentName: !Ref EnvironmentName
+        vpcname: !Ref vpcname
