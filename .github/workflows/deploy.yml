@@ -61,7 +61,7 @@ jobs:
           echo "DEPLOYMENT_ENV=dev" >> "$GITHUB_ENV"
           echo "S3_BUCKET=$DEV_S3_BUCKET" >> "$GITHUB_ENV"
           echo "ECR_URI=$DEV_ECR_URI" >> "$GITHUB_ENV"
-          echo "STACK_NAME=dev-stack" >> "$GITHUB_ENV"
+          echo "STACK_NAME=worley-nc-deployment" >> "$GITHUB_ENV"
           echo "DEPLOYMENT_ROLE_ARN=$DEV_DEPLOYMENT_ROLE" >> "$GITHUB_ENV"
          fi
 

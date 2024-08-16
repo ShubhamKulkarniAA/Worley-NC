@@ -15,7 +15,7 @@ Resources:
   NestedVPCStack:
     Type: AWS::Serverless::Application
     Properties:
-      Location: ./resources/vpc.yml
+      Location: resources/vpc.yml
       Parameters:
         Name: !Ref Name
         VpcCIDR: !Ref VpcCIDR
