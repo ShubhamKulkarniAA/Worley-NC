@@ -18,8 +18,6 @@ Parameters:
     Type: String
   AvailabilityZone2:
     Type: String
-  EnvironmentName:
-    Type: String
 
 
 Resources:
@@ -29,14 +27,14 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub '$(vpcname)-Vpc-${EnvironmentName}'
+          Value: !Ref vpcname
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: !Sub '$(vpcname)-IG-${EnvironmentName}'
+          Value: !Sub '$(vpcname)-IG'
 
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
