@@ -1,11 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: VPC stack with public and private subnets, route tables, NAT gateway, and internet gateway
-
 Parameters:
   VpcCIDR:
     Type: String
-
-  EnvironmentName:
+  vpcname:
     Type: String
 
 Resources:
@@ -15,6 +13,6 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub '${EnvironmentName}-vpc'
+          Value: !Ref vpcname
 
  
