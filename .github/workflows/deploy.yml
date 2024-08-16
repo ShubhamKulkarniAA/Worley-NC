@@ -73,41 +73,13 @@ jobs:
           echo "Deployment Stack Name : ${{ env.STACK_NAME }}"
     #      echo "Deployment Environment: ${{ env.DEPLOYMENT_ENV }}"
 
-    - name: Upload nested stack templates to S3
-      run: |
-        aws s3 cp ./resources/vpc.yml s3://my-demo-s3-bucket-test-project-18/vpc.yml
-        aws s3 cp ./resources/template.yml s3://my-demo-s3-bucket-test-project-18/template.yml
-        aws s3 cp ./resources/flowlogs.yml s3://my-demo-s3-bucket-test-project-18/flowlog.yml
-
-    - name: Check status of Previously Deployed stacks
-      id: check_dev-stack
-      run: |
-        STACK_STATUS=$(aws cloudformation describe-stacks --stack-name dev-stack --query "Stacks[0].StackStatus" --output text || echo "STACK_NOT_FOUND")
-        echo "dev-stack Stack Status: $STACK_STATUS"
-        echo "::set-output name=stack_status::$STACK_STATUS"
-
-    - name: Delete main stack if main stack is in DELETE_IN_PROGRESS state
-      if: steps.check_main_stack.outputs.stack_status == 'DELETE_IN_PROGRESS'
-      run: |
-        echo "Deleting dev-stack stack..."
-        aws cloudformation wait stack-delete-complete --stack-name dev-stack
-        echo "Delete Complete..."
-        
-    - name: Delete main stack if main stack is in ROLLBACK_COMPLETE state
-      if: steps.check_main_stack.outputs.stack_status == 'ROLLBACK_COMPLETE' || 'CREATE_COMPLETE'
-      run: |
-        echo "Deleting main stack..."
-        aws cloudformation delete-stack --stack-name dev-stack
-        aws cloudformation wait stack-delete-complete --stack-name main-stack
-        echo "Delete Complete..."
-
     - name: Install cfn-lint
       run: pip install cfn-lint
  
     - name: Print the CloudFormation Linter Version & Run Linter
       run: |
         cfn-lint --version
-        cfn-lint --ignore-checks W3011,W3002 -t ./resources/template.yml
+        cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
  
 
     - name: Prepare Parameter Overrides
@@ -120,7 +92,7 @@ jobs:
       uses: aws-actions/aws-cloudformation-github-deploy@v1
       with:
         name: ${{ env.STACK_NAME }}
-        template:  ./resources/template.yml
+        template:  ./template.yml
         parameter-overrides: file://${{ github.workspace }}/resources/params.${{ env.DEPLOYMENT_ENV }}.json
         capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND, CAPABILITY_NAMED_IAM
         no-fail-on-empty-changeset: "1"

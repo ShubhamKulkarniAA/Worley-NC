@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Main stack template
+
+Parameters:
+  VpcCIDR:
+    Type: String
+  Name:
+    Type: String
+  EnvironmentName:
+    Type: String
+
+Resources:
+
+  NestedVPCStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ./resources/vpc.yml
+      Parameters:
+        Name: !Ref Name
+        VpcCIDR: !Ref VpcCIDR
+        EnvironmentName: !Ref EnvironmentName
