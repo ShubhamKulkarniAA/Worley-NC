@@ -1,0 +1,98 @@
+name: Deploy React App to CloudFormation
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - qa
+
+jobs:
+  cloudformation-deploy:
+    name: Deploy Cloudformation
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }} 
+
+    - name: Install AWS cli
+      id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@master
+    - run: |
+        aws --version
+
+    - name: Set env BRANCH
+      run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+ 
+    - name: Set env DEPLOYMENT_ENV and DEPLOYMENT_ROLE_ARN and S3_BUCKET
+      env:
+ #       DEV_DEPLOYMENT_ROLE: ${{ secrets.DEV_DEPLOYMENT_ROLE }}
+ #       QA_DEPLOYMENT_ROLE: ${{ secrets.QA_DEPLOYMENT_ROLE  }}
+ #       PROD_DEPLOYMENT_ROLE: ${{ secrets.PROD_DEPLOYMENT_ROLE }}
+ #       UAT_DEPLOYMENT_ROLE: ${{ secrets.UAT_DEPLOYMENT_ROLE }}
+        DEV_S3_BUCKET: ${{ secrets.DEV_S3_BUCKET }}
+        QA_S3_BUCKET: ${{ secrets.QA_S3_BUCKET }}
+        PROD_S3_BUCKET: ${{ secrets.PROD_S3_BUCKET }}
+      run: |
+         if [[ $BRANCH == 'master' || $BRANCH == 'main' ]]; then
+          echo "DEPLOYMENT_ENV=prod" >> "$GITHUB_ENV"
+          echo "DEPLOYMENT_ROLE_ARN=$PROD_DEPLOYMENT_ROLE" >> "$GITHUB_ENV"
+          echo "S3_BUCKET=$PROD_S3_BUCKET" >> "$GITHUB_ENV"
+          echo "ECR_URI=$PROD_ECR_URI" >> "$GITHUB_ENV"
+          echo "STACK_NAME=prod-stack" >> "$GITHUB_ENV"
+         elif [[ $BRANCH == 'qa' ]]; then
+          echo "DEPLOYMENT_ENV=qa" >> "$GITHUB_ENV"
+          echo "DEPLOYMENT_ROLE_ARN=$QA_DEPLOYMENT_ROLE" >> "$GITHUB_ENV"
+          echo "S3_BUCKET=$QA_S3_BUCKET" >> "$GITHUB_ENV"
+          echo "ECR_URI=$QA_ECR_URI" >> "$GITHUB_ENV"
+          echo "STACK_NAME=qa-stack" >> "$GITHUB_ENV"
+         else
+          echo "DEPLOYMENT_ENV=dev" >> "$GITHUB_ENV"
+          echo "S3_BUCKET=$DEV_S3_BUCKET" >> "$GITHUB_ENV"
+          echo "ECR_URI=$DEV_ECR_URI" >> "$GITHUB_ENV"
+          echo "STACK_NAME=dev-stack" >> "$GITHUB_ENV"
+          echo "DEPLOYMENT_ROLE_ARN=$DEV_DEPLOYMENT_ROLE" >> "$GITHUB_ENV"
+         fi
+
+    - name: Print all the variable parameters
+      run: |
+          echo "Role ARN: ${{ env.DEPLOYMENT_ROLE_ARN }}"
+          echo "S3 Bucket arn : ${{ env.S3_BUCKET }}"
+          echo "ECR Reposetory : ${{ env.ECR_URI }}"
+          echo "Deployment Stack Name : ${{ env.STACK_NAME }}"
+    #      echo "Deployment Environment: ${{ env.DEPLOYMENT_ENV }}"
+
+    - name: Install cfn-lint
+      run: pip install cfn-lint
+ 
+    - name: Print the CloudFormation Linter Version & Run Linter
+      run: |
+        cfn-lint --version
+        cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
+ 
+
+    - name: Prepare Parameter Overrides
+      id: prepare_params
+      run: |
+        params=$(cat ./resources/params.${{ env.DEPLOYMENT_ENV }}.json | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | join(" ")')
+        echo "params=$params" >> $GITHUB_ENV
+        
+    - name: Deploy to AWS Cloudformation
+      uses: aws-actions/aws-cloudformation-github-deploy@v1
+      with:
+        name: ${{ env.STACK_NAME }}
+        template:  ./template.yml
+        parameter-overrides: file://${{ github.workspace }}/resources/params.${{ env.DEPLOYMENT_ENV }}.json
+        capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND, CAPABILITY_NAMED_IAM
+        no-fail-on-empty-changeset: "1"
