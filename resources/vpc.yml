@@ -4,7 +4,8 @@ Description: VPC stack with public and private subnets, route tables, NAT gatewa
 Parameters:
   VpcCIDR:
     Type: String
-  vpcname
+  vpcname:
+    Type: String
  
     
 Resources:
