@@ -1,5 +1,4 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Transform: "AWS::Serverless-2016-10-31"
 Description: Main stack template
 
 Parameters:
@@ -12,10 +11,10 @@ Parameters:
 
 Resources:
 
-  NestedVPCStack:
+   NestedVPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yaml'
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
         Name: !Ref Name
         VpcCIDR: !Ref VpcCIDR
