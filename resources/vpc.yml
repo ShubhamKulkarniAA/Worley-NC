@@ -1,5 +1,4 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: "AWS::Serverless-2016-10-31"
 Description: VPC stack with public and private subnets, route tables, NAT gateway, and internet gateway
 
 Parameters:
@@ -15,7 +14,6 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
-      Region: ap-south-1
       Tags:
         - Key: Name
           Value: !Sub '$(Name)-Vpc-${EnvironmentName}'
