@@ -4,19 +4,7 @@ Description: Main stack template
 Parameters:
   VpcCIDR:
     Type: String
-  vpcname:
-    Type: String
-  PublicSubnet1CIDR:
-    Type: String
-  PublicSubnet2CIDR:
-    Type: String
-  PrivateSubnet1CIDR:
-    Type: String
-  PrivateSubnet2CIDR:
-    Type: String
-  AvailabilityZone1:
-    Type: String
-  AvailabilityZone2:
+    
     Type: String
 
 Resources:
@@ -27,10 +15,3 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
         VpcCIDR: !Ref VpcCIDR
-        vpcname: !Ref vpcname
-        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
-        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
-        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
-        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
-        AvailabilityZone1: !Ref AvailabilityZone1
-        AvailabilityZone2: !Ref AvailabilityZone2
