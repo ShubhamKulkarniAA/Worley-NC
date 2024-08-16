@@ -4,7 +4,7 @@ Description: Main stack template
 Parameters:
   VpcCIDR:
     Type: String
-    
+  Name:
     Type: String
 
 Resources:
@@ -15,3 +15,4 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
         VpcCIDR: !Ref VpcCIDR
+        Name: !Ref Name

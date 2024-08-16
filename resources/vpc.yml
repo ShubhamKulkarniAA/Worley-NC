@@ -13,3 +13,6 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
+          Value: !Sub '$(Name)-Vpc'
+
+ 
