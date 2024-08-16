@@ -75,7 +75,7 @@ jobs:
 
     - name: Upload nested stack templates to S3
       run: |
-        aws s3 cp ./resources/vpc.yml s3://${{ secrets.S3_BUCKET }}/vpc.yml
+        aws s3 cp ./resources/vpc.yml s3://${{ secrets.S3_BUCKET }}
 
     - name: Install cfn-lint
       run: pip install cfn-lint
