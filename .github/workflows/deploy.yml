@@ -86,6 +86,11 @@ jobs:
         cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
         cfn-lint --ignore-checks W3011,W3002 -t ./resources/vpc.yml
 
+    - name: Prepare Parameter Overrides
+      id: prepare_params
+      run: |
+        params=$(cat ./params.${{ env.DEPLOYMENT_ENV }}.json | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | join(" ")')
+        echo "params=$params" >> $GITHUB_ENV
         
     - name: Deploy to AWS Cloudformation
       uses: aws-actions/aws-cloudformation-github-deploy@v1

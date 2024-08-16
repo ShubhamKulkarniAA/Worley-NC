@@ -1,4 +1,4 @@
 [
   {"ParameterKey": "VpcCIDR", "ParameterValue": "10.0.0.0/16"},
-  {"ParameterKey": "vpcname", "ParameterValue":"worley-nc-vpc"}
+  {"ParameterKey": "Name", "ParameterValue":"worley-nc"}
 ]
