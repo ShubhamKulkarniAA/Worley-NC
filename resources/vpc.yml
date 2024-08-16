@@ -4,7 +4,7 @@ Description: VPC stack with public and private subnets, route tables, NAT gatewa
 Parameters:
   VpcCIDR:
     Type: String
-  Name:
+  Prefix:
     Type: String
     
 Resources:
@@ -14,4 +14,4 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub '$(Name)-Vpc'
+          Value: !Sub 'worley-nc-$(Prefix)'
