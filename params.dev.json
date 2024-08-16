@@ -5,8 +5,7 @@
   {"ParameterKey": "PublicSubnet2CIDR", "ParameterValue": "10.0.2.0/24"},
   {"ParameterKey": "PrivateSubnet1CIDR", "ParameterValue": "10.0.3.0/24"},
   {"ParameterKey": "PrivateSubnet2CIDR", "ParameterValue": "10.0.4.0/24"},
-  {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
-  {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
+  {"ParameterKey": "AvailabilityZone1", "ParameterValue": "us-east-1a"},
+  {"ParameterKey": "AvailabilityZone2", "ParameterValue": "us-east-1b"},
   {"ParameterKey": "vpcname", "ParameterValue": "worley-nc-vpc"}
-  
 ]

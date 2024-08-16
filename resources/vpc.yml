@@ -18,8 +18,10 @@ Parameters:
     Type: String
   AvailabilityZone2:
     Type: String
+  EnvironmentName:
+    Type: String
 
-    
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -27,7 +29,20 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Ref vpcname
+          Value: !Sub '$(vpcname)-Vpc-${EnvironmentName}'
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '$(vpcname)-IG-${EnvironmentName}'
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
 
   PublicSubnet1:
     Type: AWS::EC2::Subnet
@@ -98,13 +113,6 @@ Resources:
       SubnetId: !Ref PublicSubnet2
       RouteTableId: !Ref PublicRouteTable
 
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
-        - Key: Name
-          Value: !Sub '$(vpcname)-IG-${EnvironmentName}'
-
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -112,6 +120,18 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${vpcname}-private-route-table'
+
+  NatGatewayEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: AttachGateway
+    Properties:
+      Domain: vpc
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGatewayEIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
 
   PrivateRoute:
     Type: AWS::EC2::Route
@@ -139,7 +159,43 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-VpcId"
 
-    PublicRouteTableId:
+  InternetGatewayId:
+    Description: 'The Internet Gateway ID'
+    Value: !Ref InternetGateway
+    Export:
+      Name: !Sub '${vpcname}-ig-id'
+
+  NatGatewayId:
+    Description: 'The NAT Gateway ID'
+    Value: !Ref NatGateway
+    Export:
+      Name: !Sub '${vpcname}-nat-gateway-id'
+
+  PublicSubnet1Id:
+    Description: 'The Public Subnet 1 ID'
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: !Sub '${vpcname}-public-subnetid'
+
+  PublicSubnet2Id:
+    Description: 'The Public Subnet 2 ID'
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: !Sub '${vpcname}-public-subnet-id'
+
+  PrivateSubnet1Id:
+    Description: 'The Private Subnet 1 ID'
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: !Sub '${vpcname}-private-subnet-id'
+
+  PrivateSubnet2Id:
+    Description: 'The Private Subnet 2 ID'
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: !Sub '${vpcname}-private-subnetid'
+
+  PublicRouteTableId:
     Description: 'The Public Route Table ID'
     Value: !Ref PublicRouteTable
     Export:
@@ -150,9 +206,3 @@ Outputs:
     Value: !Ref PrivateRouteTable
     Export:
       Name: !Sub '${vpcname}-private-route-table-id'
-
-  InternetGatewayId:
-    Description: 'The Internet Gateway ID'
-    Value: !Ref InternetGateway
-    Export:
-      Name: !Sub '${Name}-ig-id'
