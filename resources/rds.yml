@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Amazon Aurora PostgreSQL Database
+
+Parameters:
+  vpcname:
+    Type: String
+  InstanceType:
+    Type: String
+  PrivateSubnet1Id:
+    Type: String
+  PrivateSubnet2Id:
+    Type: String
+  DBUsername:
+    Type: String
+    NoEcho: true
+  DBPassword:
+    Type: String
+    NoEcho: true
+
+Resources:
+  worley-nerve-center-DBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties: 
+      DBSubnetGroupDescription: "Subnet group for Aurora DB cluster"
+      SubnetIds: 
+        - !ImportValue 
+          Fn::Sub: "${vpcname}-private-subnet-1-id"
+        - !ImportValue 
+          Fn::Sub: "${vpcname}-private-subnet-2-id"
+
+  worley-nerve-center-DBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow inbound traffic to Aurora
+      VpcId: !ImportValue 
+        Fn::Sub: "${vpcname}-vpc-id"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432 
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+
+  worley-nerve-center-DBCluster:
+    Type: 'AWS::RDS::DBCluster'
+    Properties:
+      Engine: aurora-PostgreSQL
+      EngineVersion: 'PostgreSQL 16.3-R2'
+      DBClusterIdentifier: worley-nerve-center-AuroraCluster
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      DBSubnetGroupName: !Ref worley-nerve-center-DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref worley-nerve-center-DBSecurityGroup
+      BackupRetentionPeriod: 7
+      PreferredBackupWindow: "04:00-05:00"
+      PreferredMaintenanceWindow: "mon:05:00-mon:06:00"
+      StorageEncrypted: true
+      DeletionPolicy: Snapshot
+      DatabaseName: worley-nerve-center-Database
+
+  worley-nerve-center-DBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: worley-nerve-center-AuroraInstance
+      DBClusterIdentifier: !Ref worley-nerve-center-DBCluster
+      DBInstanceClass: !Ref InstanceType
+      Engine: aurora-postgresql
+      PubliclyAccessible: false
+
+Outputs:
+  DBClusterEndpoint:
+    Description: The endpoint of the Aurora DB cluster
+    Value: !GetAtt worley-nerve-center-DBCluster.Endpoint.Address
+
+  DBClusterReadEndpoint:
+    Description: The read-only endpoint of the Aurora DB cluster
+    Value: !GetAtt worley-nerve-center-DBCluster.ReadEndpoint.Address

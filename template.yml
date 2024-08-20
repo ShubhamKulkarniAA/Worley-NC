@@ -6,6 +6,43 @@ Parameters:
     Type: String
   Name:
     Type: String
+  VpcCIDR:
+    Type: String
+  vpcname:
+    Type: String
+  PublicSubnet1CIDR:
+    Type: String
+  PublicSubnet2CIDR:
+    Type: String
+  PrivateSubnet1CIDR:
+    Type: String
+  PrivateSubnet2CIDR:
+    Type: String
+  AvailabilityZone1:
+    Type: String
+  AvailabilityZone2:
+    Type: String
+  PublicSubnet1:
+    Type: String
+  PublicSubnet2:
+    Type: String
+  PrivateSubnet1:
+    Type: String
+  PrivateSubnet2:
+    Type: String
+  PublicRouteTable:
+    Type: String
+  PrivateRouteTable:
+    Type: String
+  InternetGateway:
+    Type: String
+  DBInstanceType:
+    Type: String
+  DBUsername:
+    Type: String
+  DBPassword:
+    Type: String
+    NoEcho: true
 
 Resources:
 
@@ -15,4 +52,39 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
         VpcCIDR: !Ref VpcCIDR
-        Name: !Ref Name
+        Name: !Ref vpcname
+        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
+        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
+        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
+        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        AvailabilityZone1: !Ref AvailabilityZone1
+        AvailabilityZone2 : !Ref AvailabilityZone2
+        PublicSubnet1: !Ref PublicSubnet1
+        PublicSubnet2: !Ref PublicSubnet2
+        PrivateSubnet1: !Ref PrivateSubnet1
+        PrivateSubnet2: !Ref PrivateSubnet2
+        PublicRouteTable: !Ref PublicRouteTable
+        PrivateRouteTable: !Ref PrivateRouteTable
+        InternetGateway: !Ref InternetGateway
+
+  NestedRDSStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/rds.yml'
+      Parameters:
+        VPCName: !Ref vpcname
+        InstanceType: !Ref DBInstanceType
+        PrivateSubnet1Id: !Ref PrivateSubnet1
+        PrivateSubnet2Id: !Ref PrivateSubnet2
+        DBUsername: !Ref DBUsername
+        DBPassword: !Ref DBPassword
+
+Outputs:
+  VPCId:
+    Value: !GetAtt NestedVPCStack.Outputs.VPCId
+
+  RDSInstanceEndpoint:
+    Value: !GetAtt NestedRDSStack.Outputs.RDSInstanceEndpoint
+
+  RDSInstancePort:
+    Value: !GetAtt NestedRDSStack.Outputs.RDSInstancePort
