@@ -3,7 +3,7 @@ Description: Main stack template
 
 Parameters:
   
-  S3Bucket:
+  S3BucketName:
     Type: String
     Description: "The name of the S3 bucket."
   
@@ -38,14 +38,14 @@ Resources:
             Resource: !Join 
               - ''
               - - 'arn:aws:s3:::'
-                - !Ref S3Bucket
+                - !Ref S3BucketName
                 - /*
-      Bucket: !Ref S3Bucket
+      Bucket: !Ref S3BucketName
   
 
 Outputs:
   S3Bucket:
     Description: "The name of the S3 bucket."
-    Value: !Ref S3Bucket
+    Value: !Ref S3BucketName
     Export:
       Name: !Sub "${AWS::StackName}-S3Bucket"
