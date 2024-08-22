@@ -73,4 +73,3 @@ Resources:
         AvailabilityZone1: !Ref AvailabilityZone1
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
-
