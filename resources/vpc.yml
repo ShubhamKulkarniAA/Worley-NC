@@ -120,8 +120,6 @@ Resources:
         - Key: Name
           Value: !Sub "${VpcName}-PrivateRouteTable"
 
-  
-
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
