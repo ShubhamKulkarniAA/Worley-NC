@@ -2,53 +2,69 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Main stack template
 
 Parameters:
-  
-  S3Bucket:
+  VpcCIDR:
+    Type: String
+  VpcName:
+    Type: String
+  PublicSubnet1CIDR:
+    Type: String
+  PublicSubnet2CIDR:
+    Type: String
+  PrivateSubnet1CIDR:
+    Type: String
+  PrivateSubnet2CIDR:
+    Type: String
+  AvailabilityZone1:
+    Type: String
+  AvailabilityZone2:
+    Type: String
+  InternetGatewayIG:
+    Type: String
+  DBInstanceType:
+    Type: String
+  S3BucketName:
     Type: String
     Description: "The name of the S3 bucket."
-  
+  AccessControl:
+    Type: String
+    Description: "The access control settings for the S3 bucket."
+    Default: "Private"
+    AllowedValues:
+      - Private
+      - PublicRead
+      - PublicReadWrite
+      - AuthenticatedRead
+  VersioningStatus:
+    Type: String
+    Description: "The versioning status for the S3 bucket."
+    Default: "Enabled"
+    AllowedValues:
+      - Enabled
+      - Suspended
 
 Resources:
 
-  AWSTemplateFormatVersion: 2010-09-09
-Resources:
-  S3Bucket:
-    Type: 'AWS::S3::Bucket'
+  NestedVPCStack:
+    Type: AWS::CloudFormation::Stack
     Properties:
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: error.html
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-  BucketPolicy:
-    Type: 'AWS::S3::BucketPolicy'
-    Properties:
-      PolicyDocument:
-        Id: MyPolicy
-        Version: 2012-10-17
-        Statement:
-          - Sid: PublicReadForGetBucketObjects
-            Effect: Allow
-            Principal: '*'
-            Action: 
-              - 's3:GetObject'
-              - 's3.PutObject'
-            Resource: !Join 
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref S3Bucket
-                - /*
-      Bucket: !Ref S3Bucket
-  
+      TemplateURL: 'https://s3.amazonaws.com/my-demo-nw/vpc.yml'
+      Parameters:
 
-Outputs:
-  S3BucketName:
-    Description: "The name of the S3 bucket."
-    Value: !Ref S3BucketName
-    Export:
-      Name: !Sub "${AWS::StackName}-S3BucketName"
+        VpcCIDR: !Ref VpcCIDR
+        VpcName: !Ref VpcName
+        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
+        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
+        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
+        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        AvailabilityZone1: !Ref AvailabilityZone1
+        AvailabilityZone2 : !Ref AvailabilityZone2
+        InternetGatewayIG: !Ref InternetGatewayIG
+
+  NestedRDSStack:
+    DependsOn: NestedVPCStack
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/my-demo-nw/rds.yml'
+      Parameters:
+        InstanceType: !Ref DBInstanceType
+        VpcName: !Ref VpcName
