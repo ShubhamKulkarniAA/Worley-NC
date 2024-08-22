@@ -78,12 +78,6 @@ jobs:
         aws s3 cp ./resources/vpc.yml s3://${{ secrets.S3_BUCKET }}
         aws s3 cp ./resources/rds.yml s3://${{ secrets.S3_BUCKET }}
 
-    - name: Prepare Parameter Overrides
-      id: prepare_params
-      run: |
-        params=$(cat ./params.${{ env.DEPLOYMENT_ENV }}.json | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | join(" ")')
-        echo "params=$params" >> $GITHUB_ENV
-
     - name: Install cfn-lint
       run: pip install cfn-lint
  
@@ -101,4 +95,3 @@ jobs:
         parameter-overrides: file://${{ github.workspace }}/params.${{ env.DEPLOYMENT_ENV }}.json
         capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND, CAPABILITY_NAMED_IAM
         no-fail-on-empty-changeset: "1"
-        
