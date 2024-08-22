@@ -5,8 +5,7 @@
   {"ParameterKey": "PrivateSubnet1CIDR", "ParameterValue": "10.0.3.0/24"},
   {"ParameterKey": "PrivateSubnet2CIDR", "ParameterValue": "10.0.4.0/24"},
   {"ParameterKey": "InternetGatewayIG", "ParameterValue": "worley-nerve-center-IG-dev"},
-  {"ParameterKey": "AvailabilityZone1", "ParameterValue": "us-east-1a"},
-  {"ParameterKey": "AvailabilityZone2", "ParameterValue": "us-east-1b"},
-  {"ParameterKey": "DBInstanceType", "ParameterValue": "db.r5.large"},
+  {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
+  {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
   {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"}
 ]

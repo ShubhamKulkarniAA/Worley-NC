@@ -20,27 +20,6 @@ Parameters:
     Type: String
   InternetGatewayIG:
     Type: String
-  DBInstanceType:
-    Type: String
-  S3BucketName:
-    Type: String
-    Description: "The name of the S3 bucket."
-  AccessControl:
-    Type: String
-    Description: "The access control settings for the S3 bucket."
-    Default: "Private"
-    AllowedValues:
-      - Private
-      - PublicRead
-      - PublicReadWrite
-      - AuthenticatedRead
-  VersioningStatus:
-    Type: String
-    Description: "The versioning status for the S3 bucket."
-    Default: "Enabled"
-    AllowedValues:
-      - Enabled
-      - Suspended
 
 Resources:
 
@@ -60,11 +39,3 @@ Resources:
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
 
-  NestedRDSStack:
-    DependsOn: NestedVPCStack
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/my-demo-nw/rds.yml'
-      Parameters:
-        InstanceType: !Ref DBInstanceType
-        VpcName: !Ref VpcName
