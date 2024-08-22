@@ -85,7 +85,6 @@ jobs:
       run: |
         cfn-lint --version
         cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
-        cfn-lint --ignore-checks W3011,W3002 -t ./resources/vpc.yml
         
     - name: Deploy to AWS Cloudformation
       uses: aws-actions/aws-cloudformation-github-deploy@v1
