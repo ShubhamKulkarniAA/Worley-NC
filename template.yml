@@ -44,8 +44,8 @@ Resources:
   
 
 Outputs:
-  S3BucketName:
+  S3Bucket:
     Description: "The name of the S3 bucket."
-    Value: !Ref S3BucketName
+    Value: !Ref S3Bucket
     Export:
-      Name: !Sub "${AWS::StackName}-S3BucketName"
+      Name: !Sub "${AWS::StackName}-S3Bucket"
