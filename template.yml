@@ -22,7 +22,7 @@ Parameters:
     Type: String
   DBInstanceType:
     Type: String
-  S3BucketName:
+  S3Bucket:
     Type: String
     Description: "The name of the S3 bucket."
   AccessControl:
@@ -44,13 +44,41 @@ Parameters:
 
 Resources:
 
+  AWSTemplateFormatVersion: 2010-09-09
+Resources:
   S3Bucket:
-      Type: 'AWS::S3::Bucket'
-      Properties:
-        BucketName: !Ref S3BucketName
-        AccessControl: !Ref AccessControl
-        VersioningConfiguration:
-          Status: !Ref VersioningStatus
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 
+              - 's3:GetObject'
+              - 's3.PutObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+  
 
   NestedVPCStack:
     Type: AWS::CloudFormation::Stack

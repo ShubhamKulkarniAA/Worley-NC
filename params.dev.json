@@ -8,5 +8,6 @@
   {"ParameterKey": "AvailabilityZone1", "ParameterValue": "us-east-1a"},
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "us-east-1b"},
   {"ParameterKey": "DBInstanceType", "ParameterValue": "db.r5.large"},
-  {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"}
+  {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"},
+  {"ParameterKey": "S3Bucket", "ParameterValue":""}
 ]
