@@ -109,10 +109,10 @@ jobs:
           echo "Deployment Stack Name : ${{ env.STACK_NAME }}"
     #      echo "Deployment Environment: ${{ env.DEPLOYMENT_ENV }}"
 
-    - name: Upload nested stack templates to S3
-      run: |
-        aws s3 cp ./resources/vpc.yml s3://${{ secrets.S3_BUCKET }}
-
+#    - name: Upload nested stack templates to S3
+#      run: |
+#        aws s3 cp ./resources/vpc.yml s3://${{ secrets.S3_BUCKET }}
+#
     - name: Prepare Parameter Overrides
       id: prepare_params
       run: |
