@@ -43,18 +43,6 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
-  NatGatewayEIP:
-    Type: AWS::EC2::EIP
-    DependsOn: AttachGateway
-    Properties:
-      Domain: vpc
-
-  NatGateway:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt NatGatewayEIP.AllocationId
-      SubnetId: !Ref PublicSubnet1
-
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -137,7 +125,6 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: '0.0.0.0/0'
-      NatGatewayId: !Ref NatGateway
 
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -163,12 +150,6 @@ Outputs:
     Value: !Ref InternetGateway
     Export:
       Name: !Ref InternetGatewayIG
-
-  NatGatewayId:
-    Description: 'The NAT Gateway ID'
-    Value: !Ref NatGateway
-    Export:
-      Name: !Sub "${VpcName}-NatGatewayId"
 
   PublicSubnet1Id:
     Description: 'The Public Subnet 1 ID'

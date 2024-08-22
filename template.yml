@@ -2,13 +2,29 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Main stack template
 
 Parameters:
-  
+  VpcCIDR:
+    Type: String
+  VpcName:
+    Type: String
+  PublicSubnet1CIDR:
+    Type: String
+  PublicSubnet2CIDR:
+    Type: String
+  PrivateSubnet1CIDR:
+    Type: String
+  PrivateSubnet2CIDR:
+    Type: String
+  AvailabilityZone1:
+    Type: String
+  AvailabilityZone2:
+    Type: String
+  InternetGatewayIG:
+    Type: String
   S3BucketName:
     Type: String
-    Description: "The name of the S3 bucket."
-  
 
 Resources:
+
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     Properties:
@@ -42,5 +58,19 @@ Resources:
                 - !Ref S3BucketName
                 - /*
       Bucket: !Ref S3BucketName
-  
+
+  NestedVPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
+      Parameters:
+        VpcCIDR: !Ref VpcCIDR
+        VpcName: !Ref VpcName
+        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
+        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
+        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
+        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        AvailabilityZone1: !Ref AvailabilityZone1
+        AvailabilityZone2 : !Ref AvailabilityZone2
+        InternetGatewayIG: !Ref InternetGatewayIG
 
