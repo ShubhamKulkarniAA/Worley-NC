@@ -64,7 +64,6 @@ Resources:
     Properties:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
       Parameters:
-
         VpcCIDR: !Ref VpcCIDR
         VpcName: !Ref VpcName
         PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
