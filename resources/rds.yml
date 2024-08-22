@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Amazon Aurora PostgreSQL Database
+
+Parameters:
+  VpcName:
+    Type: String
+  InstanceType:
+    Type: String
+
+Resources:
+  DBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties: 
+      DBSubnetGroupDescription: "Subnet group for Aurora DB cluster"
+      SubnetIds: 
+        - !ImportValue 
+          Fn::Sub: "${VpcName}-PublicSubnet2Id"
+        - !ImportValue 
+          Fn::Sub: "${VpcName}-PublicSubnet1Id"
+
+  DBSecurityGroup:  
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow inbound traffic to Aurora
+      VpcId: !ImportValue 
+        Fn::Sub: '${VpcName}-VpcId'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432 
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+                     
+  DBSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: RDSDBSecret
+      Description: "RDS credentials for MyRDSInstance"
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "dbadminuser"}'
+        GenerateStringKey: "password"
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\\'
+
+  DBCluster:
+    Type: 'AWS::RDS::DBCluster'
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: '16.3'
+      DBClusterIdentifier: worley-nerve-center-AuroraCluster
+      MasterUsername: !Join
+          - ''
+          - - '{{resolve:secretsmanager:'
+            - !Ref DBSecret
+            - ':SecretString:username}}' 
+      MasterUserPassword: !Join
+          - ''
+          - - '{{resolve:secretsmanager:'
+            - !Ref DBSecret
+            - ':SecretString:password}}'
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DBSecurityGroup
+      BackupRetentionPeriod: 7
+      PreferredBackupWindow: "04:00-05:00"
+      PreferredMaintenanceWindow: "mon:05:00-mon:06:00"
+      StorageEncrypted: true
+      DatabaseName: WorleyNerveCenterDatabase
+
+  DBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: worley-nerve-center-AuroraInstance
+      DBClusterIdentifier: !Ref DBCluster
+      DBInstanceClass: !Ref InstanceType
+      Engine: aurora-postgresql
+      PubliclyAccessible: false
+
+Outputs:
+  DBClusterEndpoint:
+    Description: The endpoint of the Aurora DB cluster
+    Value: !GetAtt DBCluster.Endpoint.Address
+
+  DBClusterReadEndpoint:
+    Description: The read-only endpoint of the Aurora DB cluster
+    Value: !GetAtt DBCluster.ReadEndpoint.Address

@@ -65,7 +65,7 @@ Resources:
       DeliverLogsPermissionArn: !GetAtt 'FlowLogsRole.Arn'
       LogGroupName: !Ref FlowLogsLogGroup
       ResourceId: !ImportValue 
-        Fn::Sub: "${VpcName}-VpcId"
+        Fn::Sub: "${vpcname}-VpcId"
       ResourceType: 'VPC'
       TrafficType: !Ref TrafficType
       LogDestinationType: s3

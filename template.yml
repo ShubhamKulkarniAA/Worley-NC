@@ -2,17 +2,53 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Main stack template
 
 Parameters:
-  VpcCIDR:
+  
+  S3Bucket:
     Type: String
-  Name:
-    Type: String
+    Description: "The name of the S3 bucket."
+  
 
 Resources:
 
-   NestedVPCStack:
-    Type: AWS::CloudFormation::Stack
+  AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
     Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
-      Parameters:
-        VpcCIDR: !Ref VpcCIDR
-        Name: !Ref Name
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 
+              - 's3:GetObject'
+              - 's3.PutObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+  
+
+Outputs:
+  S3BucketName:
+    Description: "The name of the S3 bucket."
+    Value: !Ref S3BucketName
+    Export:
+      Name: !Sub "${AWS::StackName}-S3BucketName"
