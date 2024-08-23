@@ -79,6 +79,7 @@ jobs:
         aws s3 cp ./resources/rds.yml s3://${{ secrets.S3_BUCKET }}
         aws s3 cp ./resources/cloudtrail.yml s3://${{ secrets.S3_BUCKET }}
         aws s3 cp ./resources/rds.yml s3://${{ secrets.S3_BUCKET }}
+        aws s3 cp ./resources/flowlogs.yml s3://${{ secrets.S3_BUCKET }}
 
 
     - name: Install cfn-lint
@@ -88,6 +89,9 @@ jobs:
       run: |
         cfn-lint --version
         cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
+        cfn-lint --ignore-checks W3011,W3002 -t ./vpc.yml
+        cfn-lint --ignore-checks W3011,W3002 -t ./rds.yml
+        cfn-lint --ignore-checks W3011,W3002 -t ./flowlogs.yml
         
     - name: Deploy to AWS Cloudformation
       uses: aws-actions/aws-cloudformation-github-deploy@v1

@@ -83,4 +83,10 @@ Resources:
     Properties:
       TrailName: !Ref TrailName
       S3BucketCTName: !Ref S3BucketCTName
-      
+
+Outputs:
+  S3BucketName:
+    Description: "The name of the S3 bucket."
+    Value: !Ref S3Bucket
+    Export:
+      Name: !Ref S3BucketName
