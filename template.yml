@@ -79,10 +79,11 @@ Resources:
         InternetGatewayIG: !Ref InternetGatewayIG
 
   NestedCloutTrailStack:
-    Type: AWS::CloudTrail::Trail
+    Type: AWS::CloudFormation::Stack
     Properties:
-      TrailName: !Ref TrailName
-      S3BucketCTName: !Ref S3BucketCTName
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
+      Parameters:
+        S3BucketName: !Ref S3BucketName
 
 Outputs:
   S3BucketName:
