@@ -22,9 +22,7 @@ Parameters:
     Type: String
   S3BucketName:
     Type: String
-  TrailName:
-    Type: String
-  S3BucketCTName:
+  MySubnet:
     Type: String
 
 Resources:
@@ -78,12 +76,13 @@ Resources:
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
 
-  NestedCloutTrailStack:
+  NestedFlowLogtack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
       Parameters:
         S3BucketName: !Ref S3BucketName
+        MySubnet: !Ref MySubnet
 
 Outputs:
   S3BucketName:
