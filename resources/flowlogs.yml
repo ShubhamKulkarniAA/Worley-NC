@@ -6,7 +6,8 @@ Parameters:
 
   S3BucketName:
     Type: String
-
+  MySubnet:
+    Type: String
 Resources:
   MyFlowLogDeliveringToS3:
       Type: AWS::EC2::FlowLog
