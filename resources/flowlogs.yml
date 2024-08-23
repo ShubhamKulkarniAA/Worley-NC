@@ -5,6 +5,10 @@ Parameters:
 
   MySubnet:
     Type: String
+  VpcName:
+    Type: String
+  S3BucketName:
+    Type: String
 
   TrafficType:
     Description: 'The type of traffic to log.'
