@@ -3,73 +3,32 @@ Transform: "AWS::Serverless-2016-10-31"
 
 Parameters:
 
-  RetentionInDays:
-    Description: 'Specifies the number of days you want to retain log events.'
-    Type: Number
-    Default: 14
-    AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
-
-  TrafficType:
-    Description: 'The type of traffic to log.'
-    Type: String
-    Default: ALL
-    AllowedValues:
-      - ACCEPT
-      - REJECT
-      - ALL
 
   S3BucketName:
     Type: String
 
 Resources:
-  FlowLogsRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: 'vpc-flow-logs.amazonaws.com'
-            Action: 'sts:AssumeRole'
-      Policies:
-        - PolicyName: 'flowlogs-policy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'logs:CreateLogStream'
-                  - 'logs:PutLogEvents'
-                  - 'logs:DescribeLogGroups'
-                  - 'logs:DescribeLogStreams'
-                Resource: !GetAtt 'FlowLogsLogGroup.Arn'
-              
-              - Effect: Allow
-                Action:
-                  - 's3:PutObject'
-                  - 's3:GetObject'
-                  - 's3:GetBucketLocation'
-                Resource: 
-                  - !Sub '${{ secrets.S3_BUCKET_ARN }}/*'
-                  - !Sub '${{ secrets.S3_BUCKET_ARN }}'
+  MyFlowLogDeliveringToS3:
+      Type: AWS::EC2::FlowLog
+      Properties: 
+        ResourceId: !Ref MySubnet
+        ResourceType: Subnet
+        TrafficType: ACCEPT
+        LogDestination: !GetAtt S3BucketName.Arn
+        LogDestinationType: s3
+        LogFormat: ${version} ${vpc-id} ${subnet-id} ${instance-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${tcp-flags} ${type} ${pkt-srcaddr} ${pkt-dstaddr}
+        MaxAggregationInterval: 60
+        DestinationOptions:
+          FileFormat: parquet
+          HiveCompatiblePartitions: true
+          PerHourPartition: true
+        Tags:
+          - Key: Name
+            Value: FlowLogForSubnetB
+          - Key: Purpose
+            Value: AcceptTraffic
 
-  FlowLogsLogGroup:
-    Type: 'AWS::Logs::LogGroup'
-    Properties:
-      RetentionInDays: !Ref RetentionInDays
-
-  VPCFlowLog:
-    Type: 'AWS::EC2::FlowLog'
-    Properties:
-      DeliverLogsPermissionArn: !GetAtt 'FlowLogsRole.Arn'
-      LogGroupName: !Ref FlowLogsLogGroup
-      ResourceId: !ImportValue 
-        Fn::Sub: "${vpcname}-VpcId"
-      ResourceType: 'VPC'
-      TrafficType: !Ref TrafficType
-      LogDestinationType: s3
-      LogDestination: !Sub 'arn:aws:s3:::${S3BucketName}/vpc-flow-logs/'
+  
 
 Outputs:
   VPCFlowLogId:
@@ -78,8 +37,3 @@ Outputs:
     Export:
       Name: !Sub '${Name}-vpc-flow-log-id'
 
-  FlowLogsLogGroupName:
-    Description: 'The name of the CloudWatch Logs log group where Amazon EC2 publishes your flow logs.'
-    Value: !Ref FlowLogsLogGroup
-    Export:
-      Name: !Sub '${Name}-flow-log-group-name'

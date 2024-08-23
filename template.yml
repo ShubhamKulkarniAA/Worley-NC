@@ -22,6 +22,10 @@ Parameters:
     Type: String
   S3BucketName:
     Type: String
+  TrailName:
+    Type: String
+  S3BucketCTName:
+    Type: String
 
 Resources:
 
@@ -73,3 +77,16 @@ Resources:
         AvailabilityZone1: !Ref AvailabilityZone1
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
+
+  NestedCloutTrailStack:
+    Type: AWS::CloudTrail::Trail
+    Properties:
+      TrailName: !Ref TrailName
+      S3BucketCTName: !Ref S3BucketCTName
+
+Outputs:
+  S3BucketName:
+    Description: "The name of the S3 bucket."
+    Value: !Ref S3Bucket
+    Export:
+      Name: !Ref S3BucketName

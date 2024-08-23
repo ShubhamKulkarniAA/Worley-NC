@@ -8,5 +8,8 @@
   {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
   {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"},
+  {"ParameterKey": "TrailName", "ParameterValue": "MyCloudTrail"},
+  {"ParameterKey": "S3KeyPrefix", "ParameterValue": "cloudtrail/"},
+  {"ParameterKey": "S3BucketCT", "ParameterValue": "worley-nc-cloudtrail"},
   {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"}
 ]
