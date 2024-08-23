@@ -6,15 +6,25 @@ Parameters:
   MySubnet:
     Type: String
 
+  TrafficType:
+    Description: 'The type of traffic to log.'
+    Type: String
+    Default: ALL
+    AllowedValues:
+      - ACCEPT
+      - REJECT
+      - ALL
+
 Resources:
 
   MyFlowLogDeliveringToS3:
     Type: AWS::EC2::FlowLog
     Properties: 
-      ResourceId: !Ref MySubnet
-      ResourceType: Subnet
-      TrafficType: ACCEPT
-      LogDestination: !GetAtt S3BucketName.Arn
+      ResourceId: !ImportValue 
+        Fn::Sub: "${VpcName}-VpcId"
+      ResourceType: VPC
+      TrafficType: !Ref TrafficType
+      LogDestination: !Sub 'arn:aws:s3:::${S3BucketName}/vpc-flow-logs/'
       LogDestinationType: s3
       LogFormat: ${version} ${vpc-id} ${subnet-id} ${instance-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${tcp-flags} ${type} ${pkt-srcaddr} ${pkt-dstaddr}
       MaxAggregationInterval: 60
