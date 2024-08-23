@@ -3,8 +3,6 @@ Transform: "AWS::Serverless-2016-10-31"
 
 Parameters:
 
-  MySubnet:
-    Type: String
   VpcName:
     Type: String
   S3BucketName:

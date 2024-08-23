@@ -79,7 +79,6 @@ Resources:
     Properties:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
       Parameters:
-        MySubnet: !Ref MySubnet
         VpcName: !Ref VpcName
         S3BucketName: !Ref S3BucketName
 
