@@ -3,9 +3,6 @@ Transform: "AWS::Serverless-2016-10-31"
 
 Parameters:
 
-
-  S3BucketName:
-    Type: String
   MySubnet:
     Type: String
 Resources:
@@ -29,12 +26,4 @@ Resources:
           - Key: Purpose
             Value: AcceptTraffic
 
-  
-
-Outputs:
-  VPCFlowLogId:
-    Description: 'The ID of the VPC Flow Log'
-    Value: !Ref VPCFlowLog
-    Export:
-      Name: !Sub '${Name}-vpc-flow-log-id'
 
