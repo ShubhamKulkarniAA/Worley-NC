@@ -5,25 +5,25 @@ Parameters:
 
   MySubnet:
     Type: String
+
 Resources:
+
   MyFlowLogDeliveringToS3:
-      Type: AWS::EC2::FlowLog
-      Properties: 
-        ResourceId: !Ref MySubnet
-        ResourceType: Subnet
-        TrafficType: ACCEPT
-        LogDestination: !GetAtt S3BucketName.Arn
-        LogDestinationType: s3
-        LogFormat: ${version} ${vpc-id} ${subnet-id} ${instance-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${tcp-flags} ${type} ${pkt-srcaddr} ${pkt-dstaddr}
-        MaxAggregationInterval: 60
-        DestinationOptions:
-          FileFormat: parquet
-          HiveCompatiblePartitions: true
-          PerHourPartition: true
-        Tags:
-          - Key: Name
-            Value: FlowLogForSubnetB
-          - Key: Purpose
-            Value: AcceptTraffic
-
-
+    Type: AWS::EC2::FlowLog
+    Properties: 
+      ResourceId: !Ref MySubnet
+      ResourceType: Subnet
+      TrafficType: ACCEPT
+      LogDestination: !GetAtt S3BucketName.Arn
+      LogDestinationType: s3
+      LogFormat: ${version} ${vpc-id} ${subnet-id} ${instance-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${tcp-flags} ${type} ${pkt-srcaddr} ${pkt-dstaddr}
+      MaxAggregationInterval: 60
+      DestinationOptions:
+        FileFormat: parquet
+        HiveCompatiblePartitions: true
+        PerHourPartition: true
+      Tags:
+        - Key: Name
+          Value: FlowLogForSubnetB
+        - Key: Purpose
+          Value: AcceptTraffic
