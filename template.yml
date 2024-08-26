@@ -24,6 +24,7 @@ Parameters:
     Type: String
   repoNameUI:
     Type: String
+    AllowedPattern: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
   
 
 Resources:

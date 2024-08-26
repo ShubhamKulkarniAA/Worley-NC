@@ -5,7 +5,7 @@ Parameters:
   repoNameUI: 
     Description: Name for ecr repo 
     Type: String
-
+    AllowedPattern: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
 Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
