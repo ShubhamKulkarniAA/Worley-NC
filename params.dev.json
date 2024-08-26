@@ -8,6 +8,5 @@
   {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
   {"ParameterKey": "VpcName", "ParameterValue": "Worley-Nerve-Center"},
-  {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"},
-  {"ParameterKey":"repoNameUI", "ParameterValue":"Worley-Nerve-Center-ui"}
+  {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"}
 ]
