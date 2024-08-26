@@ -21,8 +21,7 @@ Resources:
   MyFlowLogDeliveringToS3:
     Type: AWS::EC2::FlowLog
     Properties: 
-      ResourceId: !ImportValue 
-        Fn::Sub: "${VpcName}-VpcId"
+      ResourceId: vpc-0699c1d9ff4686a41
       ResourceType: VPC
       TrafficType: !Ref TrafficType
       LogDestination: !Sub 'arn:aws:s3:::${S3BucketName}/vpc-flow-logs/'
