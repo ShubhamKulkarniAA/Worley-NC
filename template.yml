@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Main stack template
+Description: Worley Nerve Center
 
 Parameters:
   VpcCIDR:

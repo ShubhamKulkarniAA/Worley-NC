@@ -64,6 +64,40 @@ jobs:
           echo "STACK_NAME=worley-nc-deployment" >> "$GITHUB_ENV"
           echo "DEPLOYMENT_ROLE_ARN=$DEV_DEPLOYMENT_ROLE" >> "$GITHUB_ENV"
          fi
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+           node-version: '20'
+           
+    - name: Install dependencies
+      run: npm install
+           
+    - name: Build React app
+      run: npm run build
+      
+    - name: Log in to Amazon ECR
+      run: |
+        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 339712817291.dkr.ecr.ap-south-1.amazonaws.com
+ 
+    - name: Build and Tag UI Docker Image
+      run: |
+        docker build -t worley-nerve-center-ui-repo .
+        docker tag worley-nerve-center-ui-repo:latest 339712817291.dkr.ecr.ap-south-1.amazonaws.com/worley-nerve-center-ui-repo:latest
+ 
+    - name: Push UI Docker Image to ECR
+      run: |
+        docker push 339712817291.dkr.ecr.ap-south-1.amazonaws.com/worley-nerve-center-ui-repo:latest
+ 
+    #- name: Build and Tag API Docker Image
+     # run: |
+      #  cd ../api  # Change to the directory containing the API code
+       # docker build -t api-repo .
+        #docker tag api-repo:latest 375682459802.dkr.ecr.us-east-1.amazonaws.com/api-repo:latest
+ 
+      # - name: Push API Docker Image to ECR
+       #  run: |
+        #   docker push 375682459802.dkr.ecr.us-east-1.amazonaws.com/api-repo:latest
 
     - name: Print all the variable parameters
       run: |

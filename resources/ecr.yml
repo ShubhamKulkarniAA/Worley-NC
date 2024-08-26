@@ -13,6 +13,7 @@ Resources:
       RepositoryName: !Sub ${repoNameUI}-repo
       ImageScanningConfiguration: 
         ScanOnPush: true
+        
 Outputs:
   ecrRepoName:
       Description: "The name of the S3 bucket."

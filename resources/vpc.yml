@@ -161,13 +161,13 @@ Outputs:
     Description: 'The Private Subnet 1 ID'
     Value: !Ref PrivateSubnet1
     Export:
-      Name: MyPrivateSubnet1
+      Name: !Sub "${VpcName}-PrivateSubnet1Id"
 
   PrivateSubnet2Id:
     Description: 'The Private Subnet 2 ID'
     Value: !Ref PrivateSubnet2
     Export:
-      Name: MyPrivateSubnet2
+      Name: !Sub "${VpcName}-PrivateSubnet2Id"
 
   PublicRouteTableId:
     Description: 'The Public Route Table ID'
