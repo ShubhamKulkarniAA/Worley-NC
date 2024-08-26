@@ -19,7 +19,7 @@ Parameters:
       - "16.3"
   DBName:
     Type: String
-  BBackupRetentionPeriod:
+  DBBackupRetentionPeriod:
     Type: String
     AllowedValues:
       - "35"
@@ -58,33 +58,8 @@ Parameters:
     AllowedValues:
       - "mysql"
       - "aurora-postgresql"
-  DBMajorEngineVersion:
-    Type: String
-    AllowedValues:
-      - "11"
-      - "12"
-      - "13"
-      - "14"
-      - "15"
   DBInstnaceName:
     Type: String
-  DBClusterParameterGroup:
-    Type: AWS::RDS::DBClusterParameterGroup
-    Properties:
-      Description: !Join [' ', ['Cluster Parameter Group For Aurora PostgreSQL Cluster - ',!Ref DBClusterName]]
-      Family: !FindInMap [DBFamilyMap, !Ref DBEngineVersion, "family"]
-      Parameters:
-        rds.force_ssl : 1
-        rds.restrict_password_commands : 1
-  DBParameterGroup:
-    Type: "AWS::RDS::DBParameterGroup"
-    Properties:
-      Description: !Join [' ', ['Parameter Group For Aurora PostgreSQL Cluster - ',!Ref DBClusterName]]
-      Family: !FindInMap [DBFamilyMap, !Ref DBEngineVersion, "family"]
-      Parameters:
-          log_disconnections : 1
-          log_connections : 1
-          rds.log_retention_period : 10080
   MonitoringInterval:
     Type: String
     AllowedValues:
@@ -102,13 +77,32 @@ Parameters:
       - 731
 Resources:
                  
-  WorleyDBOptionGroup:
+  DBOptionGroup:
     Type: 'AWS::RDS::OptionGroup'
     Properties:
       EngineName: !Ref DBEngineName
-      MajorEngineVersion: !Ref DBMajorEngineVersion
-      OptionGroupDescription: option group for aurora-postgresql            
-            
+      MajorEngineVersion: !Ref DBEngineVersion
+      OptionGroupDescription: option group for aurora-postgresql
+
+  DBClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: !Join [' ', ['Cluster Parameter Group For Aurora PostgreSQL Cluster - ',!Ref DBClusterName]]
+      Family: !FindInMap [DBFamilyMap, !Ref DBEngineVersion, "family"]
+      Parameters:
+        rds.force_ssl : 1
+        rds.restrict_password_commands : 1
+
+  DBParameterGroup:
+    Type: "AWS::RDS::DBParameterGroup"
+    Properties:
+      Description: !Join [' ', ['Parameter Group For Aurora PostgreSQL Cluster - ',!Ref DBClusterName]]
+      Family: !FindInMap [DBFamilyMap, !Ref DBEngineVersion, "family"]
+      Parameters:
+          log_disconnections : 1
+          log_connections : 1
+          rds.log_retention_period : 10080
+
   DBSubnetGroup:
     Type: 'AWS::RDS::DBSubnetGroup'
     Properties: 
