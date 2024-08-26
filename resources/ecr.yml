@@ -1,3 +1,6 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ECR stack template
+
 Parameters:
   repoNameUI: 
     Description: Name for ecr repo 
@@ -10,9 +13,9 @@ Resources:
       RepositoryName: !Sub ${repoNameUI}-repo
       ImageScanningConfiguration: 
         ScanOnPush: true
-
-ecrRepoName:
-    Description: "The name of the S3 bucket."
-    Value: !Ref ecrRepoUI
-    Export:
-      Name: !Ref ecrRepoName
+Outputs:
+  ecrRepoName:
+      Description: "The name of the S3 bucket."
+      Value: !Ref ecrRepoUI
+      Export:
+        Name: !Ref ecrRepoName
