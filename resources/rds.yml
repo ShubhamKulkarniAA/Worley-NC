@@ -75,6 +75,23 @@ Parameters:
     AllowedValues:
       - 7
       - 731
+
+Mappings:
+    # ABC 2.0
+    # For each allowed "DeployEnvironment" above different values are specified that can be used throughout the template
+    # DeploymentPreference values: https://github.com/awslabs/serverless-application-model/blob/master/docs/safe_lambda_deployments.rst
+    DBFamilyMap:
+      "10.18":
+        "family": "aurora-postgresql10"
+      "11.9":
+        "family": "aurora-postgresql11"
+      "12.4"  :
+        "family": "aurora-postgresql12"
+      "13.4"  :
+        "family": "aurora-postgresql13"
+      "14.3"  :
+        "family": "aurora-postgresql14"
+
 Resources:
                  
   DBOptionGroup:

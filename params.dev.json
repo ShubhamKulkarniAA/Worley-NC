@@ -9,6 +9,6 @@
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
   {"ParameterKey": "VpcName", "ParameterValue": "Worley-Nerve-Center-VPC"},
   {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"},
-  {"ParameterKey": "VpcName", "ParameterValue": "Worley-Nerve-Center"},
+  {"ParameterKey": "Name", "ParameterValue": "Worley-Nerve-Center"},
   {"ParameterKey":"repoNameUI", "ParameterValue":"Worley-Nerve-Center-ui"}
 ]
