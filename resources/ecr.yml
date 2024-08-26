@@ -12,7 +12,7 @@ Resources:
     Properties: 
       RepositoryName: !Sub ${repoNameUI}-repo
       ImageScanningConfiguration: 
-      ScanOnPush: true
+        ScanOnPush: true
         
 Outputs:
   ecrRepoName:
