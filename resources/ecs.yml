@@ -1,2 +1,18 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: ECR stack template
+
+Parameter:
+  ECSClusterName:
+    Type: String
+
+Resources:
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref ECSClusterName
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+      Tags:
+        - Key: environment
+          Value: dev
