@@ -22,9 +22,8 @@ Parameters:
     Type: String
   S3BucketName:
     Type: String
-  resourceid:
+  repoNameUI:
     Type: String
-  
   
 
 Resources:
@@ -84,8 +83,13 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
       Parameters:
         S3BucketName: !Ref S3BucketName
-        resourceid: !Ref resourceid
 
+  ECRStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecr.yml'
+      Parameters:
+        repoNameUI: !Ref repoNameUI
 
 Outputs:
   S3BucketName:
