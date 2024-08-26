@@ -2,8 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
 
-  VpcName:
-    Type: String
   S3BucketName:
     Type: String
 
@@ -15,13 +13,15 @@ Parameters:
       - ACCEPT
       - REJECT
       - ALL
+  resourceid:
+    Type: String
 
 Resources:
 
   MyFlowLogDeliveringToS3:
     Type: AWS::EC2::FlowLog
     Properties: 
-      ResourceId: vpc-0699c1d9ff4686a41
+      ResourceId: !Ref resourceid
       ResourceType: VPC
       TrafficType: !Ref TrafficType
       LogDestination: !Sub 'arn:aws:s3:::${S3BucketName}/vpc-flow-logs/'

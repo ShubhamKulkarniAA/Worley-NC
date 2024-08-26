@@ -22,6 +22,8 @@ Parameters:
     Type: String
   S3BucketName:
     Type: String
+  resourceid:
+    Type: String
   
   
 
@@ -76,9 +78,14 @@ Resources:
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
 
-  
+  NestedFlowLogtack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
+      Parameters:
+        S3BucketName: !Ref S3BucketName
+        resourceid: !Ref resourceid
 
-  
 
 Outputs:
   S3BucketName:
