@@ -1,0 +1,12 @@
+Parameters:
+  repoNameUI: 
+    Description: Name for ecr repo 
+    Type: String
+
+Resources:
+  ecrRepoUI:
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Sub ${repoNameUI}-repo
+      ImageScanningConfiguration: 
+        ScanOnPush: true
