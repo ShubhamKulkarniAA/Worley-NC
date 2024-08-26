@@ -52,7 +52,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PublicSubnet1"
+          Value: !Sub "${VpcName}-PublicSubnet1"
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -63,7 +63,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PublicSubnet2"
+          Value: !Sub "${VpcName}-PublicSubnet2"
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -73,7 +73,7 @@ Resources:
       AvailabilityZone: !Ref AvailabilityZone1
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PrivateSubnet1"
+          Value: !Sub "${VpcName}-PrivateSubnet1"
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -83,7 +83,7 @@ Resources:
       AvailabilityZone: !Ref AvailabilityZone2
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PrivateSubnet2"
+          Value: !Sub "${VpcName}-PrivateSubnet2"
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -91,7 +91,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PublicRouteTable"
+          Value: !Sub "${VpcName}-PublicRouteTable"
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -118,7 +118,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub "${Name}-PrivateRouteTable"
+          Value: !Sub "${VpcName}-PrivateRouteTable"
 
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
