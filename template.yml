@@ -24,7 +24,8 @@ Parameters:
     Type: String
   repoNameUI:
     Type: String
-    AllowedPattern: "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+  ECSClusterName:
+    Type: String
   
 
 Resources:
@@ -92,6 +93,13 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecr.yml'
       Parameters:
         repoNameUI: !Ref repoNameUI
+
+  ECSStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecs.yml'
+      Parameters:
+        ECSClusterName: !Ref ECSClusterName
 
 Outputs:
   S3BucketName:
