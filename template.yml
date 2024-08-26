@@ -77,13 +77,7 @@ Resources:
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
 
-  NestedFlowLogtack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
-      Parameters:
-        VpcName: !Ref VpcName
-        S3BucketName: !Ref S3BucketName
+  
 
   ECRStack:
     Type: AWS::CloudFormation::Stack
