@@ -10,3 +10,9 @@ Resources:
       RepositoryName: !Sub ${repoNameUI}-repo
       ImageScanningConfiguration: 
         ScanOnPush: true
+
+ecrRepoName:
+    Description: "The name of the S3 bucket."
+    Value: !Ref ecrRepoUI
+    Export:
+      Name: !Ref ecrRepoName

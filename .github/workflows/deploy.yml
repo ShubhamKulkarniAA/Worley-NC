@@ -80,6 +80,7 @@ jobs:
         aws s3 cp ./resources/cloudtrail.yml s3://${{ secrets.S3_BUCKET }}
         aws s3 cp ./resources/rds.yml s3://${{ secrets.S3_BUCKET }}
         aws s3 cp ./resources/flowlogs.yml s3://${{ secrets.S3_BUCKET }}
+        aws s3 cp ./resources/ecr.yml s3://${{ secrets.S3_BUCKET }}
 
 
     - name: Install cfn-lint

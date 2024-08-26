@@ -22,6 +22,8 @@ Parameters:
     Type: String
   S3BucketName:
     Type: String
+  repoNameUI:
+    Type: String
 
 Resources:
 
@@ -81,6 +83,13 @@ Resources:
       Parameters:
         VpcName: !Ref VpcName
         S3BucketName: !Ref S3BucketName
+
+  ECRStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecr.yml'
+      Parameters:
+        repoNameUI: !Ref repoNameUI
 
 Outputs:
   S3BucketName:
