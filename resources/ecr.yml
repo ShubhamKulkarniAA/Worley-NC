@@ -18,4 +18,4 @@ Outputs:
       Description: "The name of the S3 bucket."
       Value: !Ref ecrRepoUI
       Export:
-        Name: !Ref ecrRepoName
+        Name: !Sub ${repoNameUI}-repo
