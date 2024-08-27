@@ -30,6 +30,12 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
+  repoNameAPI:
+    Type: String
+  ECSTaskAPI:
+    Type: String
+  ContainerNameAPI:
+    Type: String
   DesiredServiceCount:
     Type: String
   ALBName:
@@ -106,10 +112,14 @@ Resources:
         ECSClusterName: !Ref ECSClusterName
         ECSTaskUI: !Ref ECSTaskUI
         ContainerNameUI: !Ref ContainerNameUI
+        repoNameUI: !Ref repoNameUI
+        ECSTaskUI: !Ref ECSTaskUI
+        ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
         ALBName: !Ref ALBName
         DesiredServiceCount: !Ref DesiredServiceCount
         ServiceNameUI: !Ref ServiceNameUI
+        
 
 Outputs:
   S3BucketName:

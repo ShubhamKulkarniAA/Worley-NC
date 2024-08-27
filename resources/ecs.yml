@@ -27,6 +27,13 @@ Resources:
       ImageScanningConfiguration: 
         ScanOnPush: true
 
+  ecrRepoAPI:
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Ref repoNameAPI
+      ImageScanningConfiguration: 
+        ScanOnPush: true
+
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -76,6 +83,30 @@ Resources:
       ContainerDefinitions:
         - Name: !Ref ContainerNameUI
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ecrRepoUI}:latest"
+          PortMappings:
+            - ContainerPort: 80
+              Protocol: tcp
+              HostPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+
+  ECSTaskDefinitionAPI:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Ref ECSTaskAPI
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: 256
+      Memory: 512
+      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
+      ContainerDefinitions:
+        - Name: !Ref ContainerNameAPI
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ecrRepoAPI}:latest"
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
