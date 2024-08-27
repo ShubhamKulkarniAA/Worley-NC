@@ -190,7 +190,7 @@ Resources:
           SecurityGroups:
             - !Ref ALBSecurityGroup
       LoadBalancers:
-        - ContainerName: ContainerNameUI
+        - ContainerName: !Ref ContainerNameUI
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
 
