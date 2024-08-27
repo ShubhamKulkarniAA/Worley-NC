@@ -10,6 +10,12 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
+  repoNameAPI:
+    Type: String
+  ECSTaskAPI:
+    Type: String
+  ContainerNameAPI:
+    Type: String
   VpcName:
     Type: String
   DesiredServiceCount:
