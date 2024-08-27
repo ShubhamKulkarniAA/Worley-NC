@@ -4,7 +4,7 @@
   {"ParameterKey": "PublicSubnet2CIDR", "ParameterValue": "10.0.2.0/24"},
   {"ParameterKey": "PrivateSubnet1CIDR", "ParameterValue": "10.0.3.0/24"},
   {"ParameterKey": "PrivateSubnet2CIDR", "ParameterValue": "10.0.4.0/24"},
-  {"ParameterKey": "InternetGatewayIG", "ParameterValue": "worley-nerve-center-IG-dev"},
+  {"ParameterKey": "InternetGatewayIG", "ParameterValue": "Worley-Nerve-Center-IG"},
   {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
   {"ParameterKey": "VpcName", "ParameterValue": "Worley-Nerve-Center"},
