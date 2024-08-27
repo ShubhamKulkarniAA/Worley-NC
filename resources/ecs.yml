@@ -8,12 +8,6 @@ Parameters:
     Type: String
   ECSTaskUI:
     Type: String
-  cpu:
-    Type: String
-    Default: 0
-  Memory:
-    Type: String
-    Default: 0
   ContainerNameUI:
     Type: String
 
@@ -68,8 +62,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      Cpu: !Ref cpu
-      Memory: !Ref Memory
+      Cpu: 256
+      Memory: 512
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
       ContainerDefinitions:
         - Name: !Ref ContainerNameUI
