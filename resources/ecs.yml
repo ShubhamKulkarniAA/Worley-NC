@@ -17,7 +17,7 @@ Parameters:
   ALBName:
     Type: String
   ServiceNameUI:
-    Type String
+    Type: String
 
 Resources:
   ecrRepoUI:
