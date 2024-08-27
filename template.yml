@@ -36,7 +36,8 @@ Parameters:
     Type: String
   ALBName:
     Type: String
-  
+  VPCID:
+    Type: String
 
 Resources:
 
@@ -111,6 +112,7 @@ Resources:
         DesiredServiceCount: !Ref DesiredServiceCount
         TargetName: !Ref TargetName
         ALBName: !Ref ALBName
+        VPCID: !Ref VPCID
 
 Outputs:
   S3BucketName:

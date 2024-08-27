@@ -15,5 +15,6 @@
   {"ParameterKey":"ContainerNameUI", "ParameterValue":"Worley-Nerve-Center-UI_Container"},
   {"ParameterKey":"DesiredServiceCount", "ParameterValue":"0"},
   {"ParameterKey":"TargetName", "ParameterValue":"Worley-Nerve-Center-UI_TG"},
-  {"ParameterKey":"ALBName","ParameterValue":"Worley-Nerve-Center_ALB"}
+  {"ParameterKey":"ALBName","ParameterValue":"Worley-Nerve-Center_ALB"},
+  {"ParameterKey":"VPCID", "ParameterValue":"vpc-069cfa2621f8e7aec"}
 ]
