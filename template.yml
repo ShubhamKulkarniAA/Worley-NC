@@ -32,6 +32,8 @@ Parameters:
     Type: String
   TargetName:
     Type: String
+  ALBName:
+    Type: String
   
 
 Resources:
@@ -105,6 +107,7 @@ Resources:
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
         TargetName: !Ref TargetName
+        ALBName: !Ref ALBName
 
 Outputs:
   S3BucketName:
