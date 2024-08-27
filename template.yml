@@ -30,8 +30,6 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
-  repoNameUI:
-    Type: String
   
 
 Resources:
