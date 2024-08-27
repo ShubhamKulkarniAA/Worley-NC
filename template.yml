@@ -30,8 +30,12 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
-  
- 
+  DesiredServiceCount:
+    Type: String
+  TargetName:
+    Type: String
+  ALBName:
+    Type: String
 
 Resources:
 

@@ -114,8 +114,7 @@ Parameters:
     Type: String
   ALBName:
     Type: String
-  VPCID:
-    Type: String
+  
 Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
