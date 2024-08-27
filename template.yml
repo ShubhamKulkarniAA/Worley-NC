@@ -26,10 +26,7 @@ Parameters:
     Type: String
   ECSClusterName:
     Type: String
-  ECSTaskUI:
-    Type: String
-  ContainerNameUI:
-    Type: String
+ 
   
 
 Resources:
@@ -91,22 +88,15 @@ Resources:
         S3BucketName: !Ref S3BucketName
         VpcName: !Ref VpcName
 
-  ECRStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecr.yml'
-      Parameters:
-        repoNameUI: !Ref repoNameUI
 
   ECSStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecs.yml'
       Parameters:
-        ECSClusterName: !Ref ECSClusterName
-        ECSTaskUI: !Ref ECSTaskUI
-        ContainerNameUI: !Ref ContainerNameUI
         repoNameUI: !Ref repoNameUI
+        ECSClusterName: !Ref ECSClusterName
+       
 
 Outputs:
   S3BucketName:
