@@ -26,6 +26,10 @@ Parameters:
     Type: String
   ECSClusterName:
     Type: String
+  ECSTaskUI:
+    Type: String
+  ContainerNameUI:
+    Type: String
   
 
 Resources:
@@ -100,6 +104,8 @@ Resources:
       TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecs.yml'
       Parameters:
         ECSClusterName: !Ref ECSClusterName
+        ECSTaskUI: !Ref ECSTaskUI
+        ContainerNameUI: !Ref ContainerNameUI
 
 Outputs:
   S3BucketName:

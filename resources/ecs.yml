@@ -4,6 +4,19 @@ Description: ECR stack template
 Parameters:
   ECSClusterName:
     Type: String
+  ECSTaskUI:
+    Type: String
+  cpu:
+    Type: String
+    Default: 0
+  Memory:
+    Type: String
+    Default: 0
+  ContainerNameUI:
+    Type: String
+  ContainerPortUI:
+    Type: String
+    Default: 80
 
 Resources:
   ECSCluster:
@@ -42,4 +55,32 @@ Resources:
                   - logs:PutLogEvents
                 Resource: "*"
 
-  
+  ECSTaskDefinitionUI:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Ref ECSTaskUI
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: !Ref cpu
+      Memory: !Ref Memory
+      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
+      ContainerDefinitions:
+        - Name: !Ref ContainerNameUI
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Fn::ImportValue MyAppECRRepoName}:latest"
+          PortMappings:
+            - ContainerPort: 80
+              Protocol: tcp
+              HostPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/my-ecs-log-group
+      RetentionInDays: 14
