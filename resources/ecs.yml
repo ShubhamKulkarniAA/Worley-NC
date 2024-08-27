@@ -64,7 +64,7 @@ Resources:
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
       ContainerDefinitions:
         - Name: !Ref ContainerNameUI
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Fn::ImportValue repoNameUI}:latest"
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${repoNameUI}:latest"
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
