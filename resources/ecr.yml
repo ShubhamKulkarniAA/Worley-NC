@@ -10,7 +10,7 @@ Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
     Properties: 
-      RepositoryName: !Sub ${repoNameUI}-repo
+      RepositoryName: !Ref repoNameUI
       ImageScanningConfiguration: 
         ScanOnPush: true
         
@@ -19,4 +19,4 @@ Outputs:
       Description: "The name of the S3 bucket."
       Value: !Ref ecrRepoUI
       Export:
-        Name: !Sub ${repoNameUI}-repo
+        Name: MyAppECRRepoName
