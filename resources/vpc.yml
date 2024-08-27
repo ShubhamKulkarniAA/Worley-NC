@@ -30,15 +30,6 @@ Resources:
         - Key: Name
           Value: !Ref VpcName
 
-  VPCNew:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: !Ref VpcCIDR
-      Tags:
-        - Key: Name
-          Value: new-vpc
-
-
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
