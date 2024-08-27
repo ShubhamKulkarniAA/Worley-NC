@@ -111,9 +111,9 @@ Resources:
         repoNameUI: !Ref repoNameUI
         ECSClusterName: !Ref ECSClusterName
         ECSTaskUI: !Ref ECSTaskUI
-        ContainerNameUI: !Ref ContainerNameUI
-        repoNameUI: !Ref repoNameUI
-        ECSTaskUI: !Ref ECSTaskUI
+        ContainerNameAPI: !Ref ContainerNameAPI
+        repoNameAPI: !Ref repoNameAPI
+        ECSTaskAPI: !Ref ECSTaskAPI
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
         ALBName: !Ref ALBName
