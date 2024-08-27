@@ -19,6 +19,15 @@ Parameters:
 
 Resources:
 
+
+  VPCNew:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      Tags:
+        - Key: Name
+          Value: vpc-new
+
   MyFlowLogDeliveringToS3:
     Type: AWS::EC2::FlowLog
     Properties: 
