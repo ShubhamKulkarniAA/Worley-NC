@@ -107,6 +107,9 @@ Resources:
         ECSTaskUI: !Ref ECSTaskUI
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
+        ALBName: !Ref ALBName
+        TargetName: !Ref TargetName
+        DesiredServiceCount: !Ref DesiredServiceCount
 
 Outputs:
   S3BucketName:
