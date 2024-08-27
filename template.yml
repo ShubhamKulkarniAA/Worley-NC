@@ -32,8 +32,6 @@ Parameters:
     Type: String
   DesiredServiceCount:
     Type: String
-  TargetName:
-    Type: String
   ALBName:
     Type: String
 
@@ -108,7 +106,6 @@ Resources:
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
         ALBName: !Ref ALBName
-        TargetName: !Ref TargetName
         DesiredServiceCount: !Ref DesiredServiceCount
 
 Outputs:

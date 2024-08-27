@@ -14,8 +14,6 @@ Parameters:
     Type: String
   DesiredServiceCount:
     Type: String
-  TargetName:
-    Type: String
   ALBName:
     Type: String
 
@@ -128,7 +126,7 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      TargetGroupName: !Ref TargetName
+      TargetGroupName: Worley-Nerve-Center-UI-TG
       VpcId: !ImportValue
         Fn::Sub: "${VpcName}-VpcId"
       Protocol: HTTP
