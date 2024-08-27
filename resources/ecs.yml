@@ -269,8 +269,6 @@ Resources:
       LoadBalancerArn: !Ref ApplicationLoadBalancerAPI
       Port: 80
       Protocol: HTTP
-      Certificates:
-        - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/169f635f-de9d-4474-b63a-a03f8e1221f1
 
   HTTPSListenerAPI:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -308,5 +306,28 @@ Resources:
         - ContainerName: !Ref ContainerNameUI
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
+
+  ECSServiceAPI:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Ref ServiceNameAPI
+      Cluster: !Ref ECSCluster
+      DesiredCount: !Ref DesiredServiceCount
+      LaunchType: FARGATE
+      TaskDefinition: !Ref ECSTaskDefinitionAPI
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PublicSubnet1Id"
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PublicSubnet2Id" 
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ALBAPISecurityGroup
+      LoadBalancers:
+        - ContainerName: !Ref ContainerNameAPI
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroupAPI
 
   
