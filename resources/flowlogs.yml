@@ -3,7 +3,7 @@ Description: flow log
 
 Parameters:
 
-  VpcNameNew:
+  VpcName:
     Type: String
   S3BucketName:
     Type: String
@@ -23,7 +23,7 @@ Resources:
     Type: AWS::EC2::FlowLog
     Properties: 
       ResourceId: !ImportValue 
-        Fn::Sub: "${VpcNameNew}-VpcId"
+        Fn::Sub: "${VpcName}-VpcId"
       ResourceType: VPC
       TrafficType: !Ref TrafficType
       LogDestination: !Sub 'arn:aws:s3:::${S3BucketName}/vpc-flow-logs/'
