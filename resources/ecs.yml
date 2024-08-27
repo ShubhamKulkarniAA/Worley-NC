@@ -14,9 +14,6 @@ Parameters:
     Default: 0
   ContainerNameUI:
     Type: String
-  ContainerPortUI:
-    Type: String
-    Default: 80
 
 Resources:
   ECSCluster:
@@ -67,7 +64,7 @@ Resources:
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
       ContainerDefinitions:
         - Name: !Ref ContainerNameUI
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Fn::ImportValue MyAppECRRepoName}:latest"
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${Fn::ImportValue repoNameUI}:latest"
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp

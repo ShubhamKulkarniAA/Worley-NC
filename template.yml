@@ -30,6 +30,8 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
+  repoNameUI:
+    Type: String
   
 
 Resources:
@@ -106,6 +108,7 @@ Resources:
         ECSClusterName: !Ref ECSClusterName
         ECSTaskUI: !Ref ECSTaskUI
         ContainerNameUI: !Ref ContainerNameUI
+        repoNameUI: !Ref repoNameUI
 
 Outputs:
   S3BucketName:
