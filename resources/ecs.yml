@@ -14,7 +14,8 @@ Parameters:
     Type: String
   DesiredServiceCount:
     Type: String
-
+  TargetName:
+    Type: String
 Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
@@ -168,6 +169,7 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
+      TargetGroupName: !Ref TargetName
       VpcId: !Sub "${VpcName}-VpcId"
       Protocol: HTTP
       Port: 80
