@@ -182,8 +182,10 @@ Resources:
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets:
-            - !ImportValue Fn::Sub: "${VpcName}-PublicSubnet1Id"
-            - !ImportValue Fn::Sub: "${VpcName}-PublicSubnet12d" 
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PublicSubnet1Id"
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PublicSubnet2Id" 
           AssignPublicIp: ENABLED
           SecurityGroups:
             - !Ref ALBSecurityGroup
