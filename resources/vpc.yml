@@ -20,7 +20,7 @@ Parameters:
     Type: String
   InternetGatewayIG:
     Type: String
-  VpcNamenew:
+  VpcNameNew:
     Type: String
 
 Resources:
@@ -153,7 +153,7 @@ Outputs:
     Description: 'The VPC ID'
     Value: !Ref VPCNew
     Export:
-      Name: !Sub "${VpcNameNew}-VpcIdnew"
+      Name: !Sub "${VpcNameNew}-VpcId"
 
   InternetGatewayId:
     Description: 'The Internet Gateway ID'
