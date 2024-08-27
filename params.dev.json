@@ -7,7 +7,7 @@
   {"ParameterKey": "InternetGatewayIG", "ParameterValue": "worley-nerve-center-IG-dev"},
   {"ParameterKey": "AvailabilityZone1", "ParameterValue": "ap-south-1a"},
   {"ParameterKey": "AvailabilityZone2", "ParameterValue": "ap-south-1b"},
-  {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"},
+  {"ParameterKey": "VpcName", "ParameterValue": "Worley-Nerve-Center"},
   {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"},
   {"ParameterKey":"repoNameUI", "ParameterValue":"worley-nerve-center-ui"},
   {"ParameterKey": "ECSClusterName", "ParameterValue": "Worley-Nerve-Center-Cluster"},
