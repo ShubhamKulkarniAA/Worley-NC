@@ -126,7 +126,6 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      TargetGroupName: Worley-UI-TG
       VpcId: !ImportValue
         Fn::Sub: "${VpcName}-VpcId"
       Protocol: HTTP
