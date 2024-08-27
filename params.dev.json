@@ -12,9 +12,5 @@
   {"ParameterKey":"repoNameUI", "ParameterValue":"worley-nerve-center-ui-registry"},
   {"ParameterKey": "ECSClusterName", "ParameterValue": "Worley-Nerve-Center-Cluster"},
   {"ParameterKey":"ECSTaskUI", "ParameterValue":"Worley-Nerve-Center-UI"},
-  {"ParameterKey":"ContainerNameUI", "ParameterValue":"Worley-Nerve-Center-UI_Container"},
-  {"ParameterKey":"DesiredServiceCount", "ParameterValue":"0"},
-  {"ParameterKey":"TargetName", "ParameterValue":"Worley-Nerve-Center-UI_TG"},
-  {"ParameterKey":"ALBName","ParameterValue":"Worley-Nerve-Center_ALB"},
-  {"ParameterKey":"VPCID", "ParameterValue":"vpc-069cfa2621f8e7aec"}
+  {"ParameterKey":"ContainerNameUI", "ParameterValue":"Worley-Nerve-Center-UI_Container"}
 ]

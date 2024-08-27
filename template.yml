@@ -30,14 +30,8 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
-  DesiredServiceCount:
-    Type: String
-  TargetName:
-    Type: String
-  ALBName:
-    Type: String
-  VPCID:
-    Type: String
+  
+ 
 
 Resources:
 
@@ -109,10 +103,6 @@ Resources:
         ECSTaskUI: !Ref ECSTaskUI
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
-        DesiredServiceCount: !Ref DesiredServiceCount
-        TargetName: !Ref TargetName
-        ALBName: !Ref ALBName
-        VPCID: !Ref VPCID
 
 Outputs:
   S3BucketName:

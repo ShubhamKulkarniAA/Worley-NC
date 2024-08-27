@@ -12,14 +12,7 @@ Parameters:
     Type: String
   VpcName:
     Type: String
-  DesiredServiceCount:
-    Type: String
-  TargetName:
-    Type: String
-  ALBName:
-    Type: String
-  VPCID:
-    Type: String
+    
 Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
@@ -106,81 +99,4 @@ Resources:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
 
-  ECSService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !Ref ECSCluster
-      DesiredCount: !Ref DesiredServiceCount
-      LaunchType: FARGATE
-      TaskDefinition: !Ref ECSTaskDefinitionUI
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          Subnets:
-            - !Sub "${VpcName}-PublicSubnet1Id"
-            - !Sub "${VpcName}-PublicSubnet12d"
-          AssignPublicIp: ENABLED
-          SecurityGroups:
-            - !Ref ALBSecurityGroup
-      LoadBalancers:
-        - ContainerName: ContainerNameUI
-          ContainerPort: 80
-          TargetGroupArn: !Ref TargetGroup
-
-  ApplicationLoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Name: !Ref ALBName
-      Subnets:
-        - !Sub "${VpcName}-PublicSubnet1Id"
-        - !Sub "${VpcName}-PublicSubnet12d"
-      SecurityGroups:
-        - !Ref ALBSecurityGroup
-      Scheme: internet-facing
-      LoadBalancerAttributes:
-        - Key: idle_timeout.timeout_seconds
-          Value: '60'
-      Type: application
-
-  HTTPListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: redirect
-          RedirectConfig:
-            Protocol: HTTPS
-            Port: "443"
-            StatusCode: HTTP_301
-            Host: "#{host}"
-            Path: "/#{path}"
-            Query: "#{query}"
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 80
-      Protocol: HTTP
-
-  HTTPSListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref TargetGroup
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 443
-      Protocol: HTTPS
-      Certificates:
-        - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/169f635f-de9d-4474-b63a-a03f8e1221f1
-
-  TargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      TargetGroupName: !Ref TargetName
-      VpcId: !Sub "${VpcName}-VpcId"
-      Protocol: HTTP
-      Port: 80
-      TargetType: ip
-      HealthCheckIntervalSeconds: 30
-      HealthCheckProtocol: HTTP
-      HealthCheckPort: "traffic-port" 
-      HealthCheckPath: /
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
+  
