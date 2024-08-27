@@ -20,6 +20,8 @@ Parameters:
     Type: String
   InternetGatewayIG:
     Type: String
+  VpcNamenew:
+    Type: String
 
 Resources:
   VPC:
@@ -29,6 +31,14 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref VpcName
+
+  VPCNew:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      Tags:
+        - Key: Name
+          Value: !Ref VpcNamenew
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -138,6 +148,12 @@ Outputs:
     Value: !Ref VPC
     Export:
       Name: !Sub "${VpcName}-VpcId"
+
+  VpcIdnew:
+    Description: 'The VPC ID'
+    Value: !Ref VPCNew
+    Export:
+      Name: !Sub "${VpcNameNew}-VpcIdnew"
 
   InternetGatewayId:
     Description: 'The Internet Gateway ID'

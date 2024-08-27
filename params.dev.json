@@ -10,5 +10,6 @@
   {"ParameterKey": "VpcName", "ParameterValue": "worley-nerve-center-VPC"},
   {"ParameterKey": "S3BucketName", "ParameterValue":"worley-nc-deployment"},
   {"ParameterKey":"repoNameUI", "ParameterValue":"worley-nerve-center-ui"},
-  {"ParameterKey": "ECSClusterName", "ParameterValue": "Worley-Nerve-Center-Cluster"}
+  {"ParameterKey": "ECSClusterName", "ParameterValue": "Worley-Nerve-Center-Cluster"},
+  {"ParameterKey":"VpcNameNew", "ParameterValue": "new-vpc"}
 ]
