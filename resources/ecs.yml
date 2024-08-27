@@ -18,7 +18,7 @@ Parameters:
     Type: String
   ALBName:
     Type: String
-    
+
 Resources:
   ecrRepoUI:
     Type: AWS::ECR::Repository
@@ -121,7 +121,7 @@ Resources:
             - !ImportValue 
                 Fn::Sub: "${VpcName}-PublicSubnet1Id"
             - !ImportValue 
-                Fn::Sub: "${VpcName}-PublicSubnet12d" 
+                Fn::Sub: "${VpcName}-PublicSubnet2Id" 
           AssignPublicIp: ENABLED
           SecurityGroups:
             - !Ref ALBSecurityGroup
@@ -138,7 +138,7 @@ Resources:
           - !ImportValue 
               Fn::Sub: "${VpcName}-PublicSubnet1Id"
           - !ImportValue 
-              Fn::Sub: "${VpcName}-PublicSubnet12d"
+              Fn::Sub: "${VpcName}-PublicSubnet2Id"
       SecurityGroups:
         - !Ref ALBSecurityGroup
       Scheme: internet-facing
