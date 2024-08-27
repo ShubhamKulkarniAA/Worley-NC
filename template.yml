@@ -30,6 +30,8 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
+  DesiredServiceCount:
+    Type: String
   TargetName:
     Type: String
   ALBName:
@@ -107,6 +109,7 @@ Resources:
         VpcName: !Ref VpcName
         ALBName: !Ref ALBName
         TargetName: !Ref TargetName
+        DesiredServiceCount: !Ref DesiredServiceCount
 
 Outputs:
   S3BucketName:

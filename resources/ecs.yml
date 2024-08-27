@@ -12,6 +12,8 @@ Parameters:
     Type: String
   VpcName:
     Type: String
+  DesiredServiceCount:
+    Type: String
   TargetName:
     Type: String
   ALBName:
@@ -170,6 +172,24 @@ Resources:
 
   
 
-  
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: !Ref DesiredServiceCount
+      LaunchType: FARGATE
+      TaskDefinition: !Ref ECSTaskDefinitionUI
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - !ImportValue Fn::Sub: "${VpcName}-PublicSubnet1Id"
+            - !ImportValue Fn::Sub: "${VpcName}-PublicSubnet12d" 
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ALBSecurityGroup
+      LoadBalancers:
+        - ContainerName: ContainerNameUI
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
 
   
