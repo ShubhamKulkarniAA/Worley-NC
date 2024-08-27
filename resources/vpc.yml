@@ -38,7 +38,7 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Ref VpcNamenew
+          Value: !Ref VpcNameNew
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
