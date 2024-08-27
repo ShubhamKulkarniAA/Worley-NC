@@ -26,8 +26,6 @@ Parameters:
     Type: String
   ECSClusterName:
     Type: String
-  VpcNameNew:
-    Type: String
   
 
 Resources:
@@ -80,7 +78,6 @@ Resources:
         AvailabilityZone1: !Ref AvailabilityZone1
         AvailabilityZone2 : !Ref AvailabilityZone2
         InternetGatewayIG: !Ref InternetGatewayIG
-        VpcNameNew: !Ref VpcNameNew
   
   NestedFlowLogtack:
     Type: AWS::CloudFormation::Stack
