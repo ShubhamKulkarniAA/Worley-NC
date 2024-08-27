@@ -12,8 +12,6 @@ Parameters:
     Type: String
   VpcName:
     Type: String
-  DesiredServiceCount:
-    Type: String
   TargetName:
     Type: String
   ALBName:
