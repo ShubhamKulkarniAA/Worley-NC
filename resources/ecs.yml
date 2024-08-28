@@ -63,6 +63,12 @@ Resources:
                 - /*
       Bucket: !Ref StaticContentBucket
 
+  CloudFrontAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "${VpcName} CloudFront Origin Identity"
+
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
