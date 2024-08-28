@@ -78,7 +78,7 @@ Resources:
           - Id: S3Origin
             DomainName: !GetAtt StaticContentBucket.DomainName
             S3OriginConfig:
-              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontAccessIdentity}"
           - Id: 'ALBOrigin'
             DomainName: !GetAtt ApplicationLoadBalancer.DNSName
             CustomOriginConfig:
