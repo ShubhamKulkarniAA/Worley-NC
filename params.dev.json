@@ -13,7 +13,11 @@
   {"ParameterKey": "ECSClusterName", "ParameterValue": "Worley-Nerve-Center-Cluster"},
   {"ParameterKey":"ECSTaskUI", "ParameterValue":"Worley-Nerve-Center-UI"},
   {"ParameterKey":"ContainerNameUI", "ParameterValue":"Worley-Nerve-Center-UI-Container"},
+  {"ParameterKey":"repoNameAPI", "ParameterValue":"worley-nerve-center-api-registry"},
+  {"ParameterKey":"ECSTaskAPI", "ParameterValue":"Worley-Nerve-Center-API"},
+  {"ParameterKey":"ContainerNameAPI", "ParameterValue":"Worley-Nerve-Center-API-Container"},
   {"ParameterKey":"DesiredServiceCount", "ParameterValue":"0"},
   {"ParameterKey":"ALBName","ParameterValue":"Worley-Nerve-Center-ALB"},
-  {"ParameterKey":"ServiceNameUI","ParameterValue":"Worley-Nerve-Center-UI-Service"}
+  {"ParameterKey":"ServiceNameUI","ParameterValue":"Worley-Nerve-Center-UI-Service"},
+  {"ParameterKey":"ALBNameAPI", "ParameterValue":"Worley-Nerve-Center-ALB-API"}
 ]
