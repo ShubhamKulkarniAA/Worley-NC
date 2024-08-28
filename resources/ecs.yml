@@ -137,6 +137,7 @@ Resources:
   ALBSecurityGroup:  
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
+      GroupName: worley-nerve-center-ui-alb-sg
       GroupDescription: Allow inbound traffic to Aurora
       VpcId: !ImportValue
         Fn::Sub: "${VpcName}-VpcId"
@@ -150,6 +151,7 @@ Resources:
   ALBAPISecurityGroup:  
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
+      GroupName: worley-nerve-center-api-alb-sg
       GroupDescription: Allow inbound traffic to Aurora
       VpcId: !ImportValue
         Fn::Sub: "${VpcName}-VpcId"
