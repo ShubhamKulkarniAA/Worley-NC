@@ -44,7 +44,8 @@ Parameters:
     Type: String
   ALBNameAPI:
     Type: String
- 
+  ServiceNameAPI:
+    Type: String
 
 Resources:
 
@@ -123,6 +124,7 @@ Resources:
         DesiredServiceCount: !Ref DesiredServiceCount
         ServiceNameUI: !Ref ServiceNameUI
         ALBNameAPI: !Ref ALBNameAPI
+        ServiceNameAPI: !Ref ServiceNameAPI
         
 
 Outputs:

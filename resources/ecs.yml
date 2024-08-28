@@ -26,6 +26,8 @@ Parameters:
     Type: String
   ServiceNameUI:
     Type: String
+  ServiceNameAPI:
+    Type: String
 
 Resources:
   ecrRepoUI:
@@ -309,4 +311,25 @@ Resources:
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
 
-  
+  ECSServiceAPI:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Ref ServiceNameAPI
+      Cluster: !Ref ECSCluster
+      DesiredCount: !Ref DesiredServiceCount
+      LaunchType: FARGATE
+      TaskDefinition: !Ref ECSTaskDefinitionAPI
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PrivateSubnet1Id"
+            - !ImportValue 
+                Fn::Sub: "${VpcName}-PrivateSubnet2Id" 
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ALBSecurityGroup
+      LoadBalancers:
+        - ContainerName: !Ref ContainerNameAPI
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroupAPI
