@@ -22,8 +22,6 @@ Parameters:
     Type: String
   ALBName:
     Type: String
-  ALBNameAPI:
-    Type: String
   ServiceNameUI:
     Type: String
 
@@ -227,63 +225,7 @@ Resources:
       Certificates:
         - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/169f635f-de9d-4474-b63a-a03f8e1221f1
 
-  ApplicationLoadBalancerAPI:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Name: !Ref ALBNameAPI
-      Subnets:
-          - !ImportValue 
-              Fn::Sub: "${VpcName}-PrivateSubnet1Id"
-          - !ImportValue 
-              Fn::Sub: "${VpcName}-PrivateSubnet2Id"
-      SecurityGroups:
-        - !Ref ALBAPISecurityGroup
-      Scheme: internal
-      LoadBalancerAttributes:
-        - Key: idle_timeout.timeout_seconds
-          Value: '60'
-      Type: application
-
-  TargetGroupAPI:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId: !ImportValue
-        Fn::Sub: "${VpcName}-VpcId"
-      Protocol: HTTP
-      Port: 80
-      TargetType: ip
-      HealthCheckIntervalSeconds: 30
-      HealthCheckProtocol: HTTP
-      HealthCheckPort: "traffic-port" 
-      HealthCheckPath: /
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
-
-  HTTPListenerAPI:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref TargetGroupAPI
-      LoadBalancerArn: !Ref ApplicationLoadBalancerAPI
-      Port: 80
-      Protocol: HTTP
-
-  HTTPSListenerAPI:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref TargetGroupAPI
-      LoadBalancerArn: !Ref ApplicationLoadBalancerAPI
-      Port: 443
-      Protocol: HTTPS
-      Certificates:
-        - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/8c13e7cd-3998-4050-89c3-695fff10f748
-
   
-
   ECSService:
     Type: AWS::ECS::Service
     Properties:
