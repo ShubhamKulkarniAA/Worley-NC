@@ -31,6 +31,17 @@ Parameters:
 
 Resources:
 
+  StaticContentBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-static-content"
+      AccessControl: Private
+      VersioningConfiguration:
+        Status: Enabled
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
