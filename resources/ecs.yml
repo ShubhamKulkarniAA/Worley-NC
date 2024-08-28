@@ -34,7 +34,7 @@ Resources:
   StaticContentBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub "${AWS::StackName}-static-content"
+      BucketName: static-s3-content
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
