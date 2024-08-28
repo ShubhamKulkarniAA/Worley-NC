@@ -30,21 +30,11 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
-  repoNameAPI:
-    Type: String
-  ECSTaskAPI:
-    Type: String
-  ContainerNameAPI:
-    Type: String
   DesiredServiceCount:
     Type: String
   ALBName:
     Type: String
   ServiceNameUI:
-    Type: String
-  ALBNameAPI:
-    Type: String
-  ServiceNameAPI:
     Type: String
 
 Resources:
@@ -115,16 +105,11 @@ Resources:
         repoNameUI: !Ref repoNameUI
         ECSClusterName: !Ref ECSClusterName
         ECSTaskUI: !Ref ECSTaskUI
-        ContainerNameAPI: !Ref ContainerNameAPI
-        repoNameAPI: !Ref repoNameAPI
-        ECSTaskAPI: !Ref ECSTaskAPI
         ContainerNameUI: !Ref ContainerNameUI
         VpcName: !Ref VpcName
         ALBName: !Ref ALBName
         DesiredServiceCount: !Ref DesiredServiceCount
         ServiceNameUI: !Ref ServiceNameUI
-        ALBNameAPI: !Ref ALBNameAPI
-        ServiceNameAPI: !Ref ServiceNameAPI
         
 
 Outputs:

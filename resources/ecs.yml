@@ -10,23 +10,13 @@ Parameters:
     Type: String
   ContainerNameUI:
     Type: String
-  repoNameAPI:
-    Type: String
-  ECSTaskAPI:
-    Type: String
-  ContainerNameAPI:
-    Type: String
   VpcName:
     Type: String
   DesiredServiceCount:
     Type: String
   ALBName:
     Type: String
-  ALBNameAPI:
-    Type: String
   ServiceNameUI:
-    Type: String
-  ServiceNameAPI:
     Type: String
 
 Resources:
@@ -34,13 +24,6 @@ Resources:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: !Ref repoNameUI
-      ImageScanningConfiguration: 
-        ScanOnPush: true
-
-  ecrRepoAPI:
-    Type: AWS::ECR::Repository
-    Properties: 
-      RepositoryName: !Ref repoNameAPI
       ImageScanningConfiguration: 
         ScanOnPush: true
 
@@ -104,37 +87,6 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
 
-  ECSTaskDefinitionAPI:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Ref ECSTaskAPI
-      NetworkMode: awsvpc
-      RequiresCompatibilities:
-        - FARGATE
-      Cpu: 256
-      Memory: 512
-      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
-      ContainerDefinitions:
-        - Name: !Ref ContainerNameAPI
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ecrRepoAPI}:latest"
-          PortMappings:
-            - ContainerPort: 80
-              Protocol: tcp
-              HostPort: 80
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Ref ECSLogGroup
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: ecs
-
-  ECSLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: /ecs/my-ecs-log-group
-      RetentionInDays: 30
-
-  
 
   ALBSecurityGroup:  
     Type: 'AWS::EC2::SecurityGroup'
@@ -149,24 +101,6 @@ Resources:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
 
-  ALBAPISecurityGroup:  
-    Type: 'AWS::EC2::SecurityGroup'
-    Properties:
-      GroupDescription: Allow inbound traffic to Aurora
-      VpcId: !ImportValue
-        Fn::Sub: "${VpcName}-VpcId"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80 
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-      SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
 
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -229,62 +163,6 @@ Resources:
       Certificates:
         - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/169f635f-de9d-4474-b63a-a03f8e1221f1
 
-  ApplicationLoadBalancerAPI:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Name: !Ref ALBNameAPI
-      Subnets:
-          - !ImportValue 
-              Fn::Sub: "${VpcName}-PublicSubnet1Id"
-          - !ImportValue 
-              Fn::Sub: "${VpcName}-PublicSubnet2Id"
-      SecurityGroups:
-        - !Ref ALBAPISecurityGroup
-      Scheme: internet-facing
-      LoadBalancerAttributes:
-        - Key: idle_timeout.timeout_seconds
-          Value: '60'
-      Type: application
-
-  TargetGroupAPI:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId: !ImportValue
-        Fn::Sub: "${VpcName}-VpcId"
-      Protocol: HTTP
-      Port: 80
-      TargetType: ip
-      HealthCheckIntervalSeconds: 30
-      HealthCheckProtocol: HTTP
-      HealthCheckPort: "traffic-port" 
-      HealthCheckPath: /
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
-
-  HTTPListenerAPI:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref TargetGroupAPI
-      LoadBalancerArn: !Ref ApplicationLoadBalancerAPI
-      Port: 80
-      Protocol: HTTP
-
-  HTTPSListenerAPI:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref TargetGroupAPI
-      LoadBalancerArn: !Ref ApplicationLoadBalancerAPI
-      Port: 443
-      Protocol: HTTPS
-      Certificates:
-        - CertificateArn: arn:aws:acm:ap-south-1:339712817291:certificate/8c13e7cd-3998-4050-89c3-695fff10f748
-
-  
 
   ECSService:
     Type: AWS::ECS::Service
@@ -308,28 +186,5 @@ Resources:
         - ContainerName: !Ref ContainerNameUI
           ContainerPort: 80
           TargetGroupArn: !Ref TargetGroup
-
-  ECSServiceAPI:
-    Type: AWS::ECS::Service
-    Properties:
-      ServiceName: !Ref ServiceNameAPI
-      Cluster: !Ref ECSCluster
-      DesiredCount: !Ref DesiredServiceCount
-      LaunchType: FARGATE
-      TaskDefinition: !Ref ECSTaskDefinitionAPI
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          Subnets:
-            - !ImportValue 
-                Fn::Sub: "${VpcName}-PublicSubnet1Id"
-            - !ImportValue 
-                Fn::Sub: "${VpcName}-PublicSubnet2Id" 
-          AssignPublicIp: ENABLED
-          SecurityGroups:
-            - !Ref ALBAPISecurityGroup
-      LoadBalancers:
-        - ContainerName: !Ref ContainerNameAPI
-          ContainerPort: 80
-          TargetGroupArn: !Ref TargetGroupAPI
 
   
