@@ -18,5 +18,6 @@
   {"ParameterKey":"ContainerNameAPI", "ParameterValue":"Worley-Nerve-Center-API-Container"},
   {"ParameterKey":"DesiredServiceCount", "ParameterValue":"0"},
   {"ParameterKey":"ALBName","ParameterValue":"Worley-Nerve-Center-ALB"},
-  {"ParameterKey":"ServiceNameUI","ParameterValue":"Worley-Nerve-Center-UI-Service"}
+  {"ParameterKey":"ServiceNameUI","ParameterValue":"Worley-Nerve-Center-UI-Service"},
+  {"ParameterKey":"ALBNameAPI", "ParameterValue":"Worley-Nerve-Center-ALB-API"}
 ]
