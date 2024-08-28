@@ -26,8 +26,6 @@ Parameters:
     Type: String
   ServiceNameUI:
     Type: String
-  ALBSecurityGroup:
-    Type: String
 
 Resources:
   ecrRepoUI:
@@ -134,6 +132,42 @@ Resources:
       LogGroupName: /ecs/my-ecs-log-group
       RetentionInDays: 30
 
+  
+
+  ALBSecurityGroup:  
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: worley-nerve-center-alb-ui
+      GroupDescription: Allow inbound traffic to Aurora
+      VpcId: !ImportValue
+        Fn::Sub: "${VpcName}-VpcId"
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  ALBAPISecurityGroup:  
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: worley-nerve-center-alb-api
+      GroupDescription: Allow inbound traffic to Aurora
+      VpcId: !ImportValue
+        Fn::Sub: "${VpcName}-VpcId"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80 
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -205,7 +239,7 @@ Resources:
           - !ImportValue 
               Fn::Sub: "${VpcName}-PrivateSubnet2Id"
       SecurityGroups:
-        - !Ref ALBSecurityGroup
+        - !Ref ALBAPISecurityGroup
       Scheme: internal
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds

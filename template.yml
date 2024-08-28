@@ -44,8 +44,7 @@ Parameters:
     Type: String
   ALBNameAPI:
     Type: String
-  ALBSecurityGroup:
-    Type: String
+ 
 
 Resources:
 
@@ -124,7 +123,6 @@ Resources:
         DesiredServiceCount: !Ref DesiredServiceCount
         ServiceNameUI: !Ref ServiceNameUI
         ALBNameAPI: !Ref ALBNameAPI
-        ALBSecurityGroup:  !Ref ALBSecurityGroup
         
 
 Outputs:
