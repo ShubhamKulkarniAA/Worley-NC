@@ -87,6 +87,11 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
 
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/my-ecs-log-group
+      RetentionInDays: 30
 
   ALBSecurityGroup:  
     Type: 'AWS::EC2::SecurityGroup'
