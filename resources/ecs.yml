@@ -35,6 +35,7 @@ Resources:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
       DistributionConfig:
+        Enabled: true
         Origins:
           - Id: 'ALBOrigin'
             DomainName: !GetAtt ApplicationLoadBalancer.DNSName
