@@ -60,7 +60,7 @@ Resources:
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
         HttpVersion: 'http2'
-        PriceClass: 'PriceClass_100'
+        PriceClass: 'PriceClass_All'
         Restrictions:
           GeoRestriction:
             RestrictionType: 'none'
