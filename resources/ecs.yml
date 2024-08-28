@@ -238,7 +238,7 @@ Resources:
               Fn::Sub: "${VpcName}-PrivateSubnet2Id"
       SecurityGroups:
         - !Ref ALBAPISecurityGroup
-      Scheme: internet-facing
+      Scheme: internal
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds
           Value: '60'
