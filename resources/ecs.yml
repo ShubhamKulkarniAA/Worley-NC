@@ -37,7 +37,7 @@ Resources:
       DistributionConfig:
         Origins:
           - Id: 'ALBOrigin'
-            DomainName: !GetAtt ApplicationLoadBalancer.LoadBalancerDNSName
+            DomainName: !GetAtt ApplicationLoadBalancer.DNSName
             CustomOriginConfig:
               HTTPPort: 80
               HTTPSPort: 443
@@ -52,22 +52,18 @@ Resources:
           CachedMethods:
             - GET
             - HEAD
-            - OPTIONS
-          Compress: true
           ForwardedValues:
-            QueryString: true
-            Headers:
-              - Origin
-              - Authorization
+            QueryString: false
             Cookies:
-              Forward: 'all'
-        Enabled: true
-        DefaultRootObject: index.html
+              Forward: 'none'
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
-        PriceClass: 'PriceClass_100'
         HttpVersion: 'http2'
-        IsIPV6Enabled: true
+        PriceClass: 'PriceClass_100'
+        Restrictions:
+          GeoRestriction:
+            RestrictionType: 'none'
+        DefaultRootObject: 'index.html'
 
   ecrRepoUI:
     Type: AWS::ECR::Repository
