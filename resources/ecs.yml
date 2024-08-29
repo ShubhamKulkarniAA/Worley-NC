@@ -269,7 +269,7 @@ Resources:
     Type: 'AWS::WAFv2::WebACL'
     Properties: 
       Name: 'MyWebACL'
-      Scope: 'REGIONAL'  # Set to 'CLOUDFRONT' for CloudFront
+      Scope: 'REGIONAL'
       DefaultAction: 
         Allow: {}  # Default action is to allow if no rules match
       VisibilityConfig: 
@@ -278,13 +278,21 @@ Resources:
         MetricName: 'MyWebACL'
       Rules:  
         - Name: 'SQLInjectionRule'
-          Priority: 2
+          Priority: 1
           Action: 
             Block: {}
           Statement: 
             ManagedRuleGroupStatement:
               VendorName: 'AWS'
-              Name: 'AWSManagedRulesSQLiRuleSet'
+              Name: 'AWSManagedRulesSQLiRuleSet'  # Ensure the name is correct
+              ScopeDownStatement: # Optional: If you want to apply this rule to specific URIs, etc.
+                ByteMatchStatement:
+                  SearchString: "sql="
+                  FieldToMatch:
+                    UriPath: {}
+                  TextTransformations:
+                    - Type: "LOWERCASE"
+                      Priority: 0
           VisibilityConfig: 
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
