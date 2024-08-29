@@ -284,15 +284,7 @@ Resources:
           Statement: 
             ManagedRuleGroupStatement:
               VendorName: 'AWS'
-              Name: 'AWSManagedRulesSQLiRuleSet'  # Ensure the name is correct
-              ScopeDownStatement: # Optional: If you want to apply this rule to specific URIs, etc.
-                ByteMatchStatement:
-                  SearchString: "sql="
-                  FieldToMatch:
-                    UriPath: {}
-                  TextTransformations:
-                    - Type: "LOWERCASE"
-                      Priority: 0
+              Name: 'AWSManagedRulesSQLiRuleSet'
           VisibilityConfig: 
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
