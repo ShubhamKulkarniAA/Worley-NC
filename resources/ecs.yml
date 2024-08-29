@@ -266,29 +266,31 @@ Resources:
       Type: application
 
   WAFWebACL:
-    Type: 'AWS::WAFv2::WebACL'
-    Properties: 
-      Name: 'MyWebACL'
-      Scope: 'REGIONAL'
-      DefaultAction: 
-        Allow: {}  # Default action is to allow if no rules match
-      VisibilityConfig: 
-        SampledRequestsEnabled: true
-        CloudWatchMetricsEnabled: true
-        MetricName: 'MyWebACL'
-      Rules:  
-        - Name: 'SQLInjectionRule'
-          Priority: 1
-          Action: 
-            Block: {}
-          Statement: 
-            ManagedRuleGroupStatement:
-              VendorName: 'AWS'
-              Name: 'AWSManagedRulesSQLiRuleSet'
-          VisibilityConfig: 
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: 'SQLInjectionRule'
+  Type: 'AWS::WAFv2::WebACL'
+  Properties: 
+    Name: 'MyWebACL'
+    Scope: 'REGIONAL'
+    DefaultAction: 
+      Allow: {}  # Default action is to allow if no rules match
+    VisibilityConfig: 
+      SampledRequestsEnabled: true
+      CloudWatchMetricsEnabled: true
+      MetricName: 'MyWebACL'
+    Rules:  
+      - Name: 'SQLInjectionRule'
+        Priority: 1
+        Action: 
+          Block: {}
+        Statement: 
+          ManagedRuleGroupStatement:
+            VendorName: 'AWS'
+            Name: 'AWSManagedRulesSQLiRuleSet'
+            ExcludedRules: []  # Optional: use to exclude specific rules
+        VisibilityConfig: 
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+          MetricName: 'SQLInjectionRule'
+
 
   WAFWebACLAssociation:
     Type: 'AWS::WAFv2::WebACLAssociation'
