@@ -45,6 +45,7 @@ Resources:
         ErrorDocument: error.html
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+
   BucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
     Properties:
@@ -103,6 +104,9 @@ Resources:
           - ErrorCode: 403
             ResponseCode: 200
             ResponsePagePath: "/index.html"
+
+  
+
 
   ecrRepoUI:
     Type: AWS::ECR::Repository
@@ -260,6 +264,37 @@ Resources:
         - Key: idle_timeout.timeout_seconds
           Value: '60'
       Type: application
+
+  WAFWebACL:
+    Type: 'AWS::WAFv2::WebACL'
+    Properties: 
+      Name: 'MyWebACL'
+      Scope: 'REGIONAL'  # Set to 'CLOUDFRONT' for CloudFront
+      DefaultAction: 
+        Allow: {}  # Default action is to allow if no rules match
+      VisibilityConfig: 
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: 'MyWebACL'
+      Rules:  
+        - Name: 'SQLInjectionRule'
+          Priority: 2
+          Action: 
+            Block: {}
+          Statement: 
+            ManagedRuleGroupStatement:
+              VendorName: 'AWS'
+              Name: 'AWSManagedRulesSQLiRuleSet'
+          VisibilityConfig: 
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: 'SQLInjectionRule'
+
+  WAFWebACLAssociation:
+    Type: 'AWS::WAFv2::WebACLAssociation'
+    Properties:
+      ResourceArn: !Sub 'arn:aws:elasticloadbalancing:${AWS::Region}:${AWS::AccountId}:loadbalancer/app/${ApplicationLoadBalancer}'
+      WebACLArn: !Ref WAFWebACL
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
