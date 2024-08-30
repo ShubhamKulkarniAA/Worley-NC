@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Defence in depth with AWS WAF Managed Rules for SQL protection.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "SQL Injection Protection"
+        Parameters:
+          - AMRSQLiRuleSetExcludedRules
+    ParameterLabels:
+      AMRSQLiRuleSetExcludedRules:
+        default: "AWSManagedRulesSQLiRuleSet"
+Parameters:
+  AMRSQLiRuleSetExcludedRules:
+    Description: "By default all rules are set to count mode during an evaluation period. If you want rules to be fully enforced at deployment remove selected or all default inputs."
+    Type: CommaDelimitedList
+    Default: SQLiExtendedPatterns_QUERYARGUMENTS, SQLi_QUERYARGUMENTS, SQLi_BODY, SQLi_COOKIE, SQLi_URIPATH
+Resources:
+  WebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Ref WebACLNameParam
+      Scope: REGIONAL
+      Description: Web ACL using AWS Managed Rules for SQL injection protection.
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: !Join
+            - ""
+            - - !Ref WebACLNameParam
+              - "Metric"
+      Tags:
+        - Key: Layer
+          Value: Application
+      Rules:
+        - Name: AWS-AWSManagedRulesSQLiRuleSet
+          Priority: 0
+          OverrideAction:
+            None: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRSQLi
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesSQLiRuleSet
+              ExcludedRules: !Ref AMRSQLiRuleSetExcludedRules
