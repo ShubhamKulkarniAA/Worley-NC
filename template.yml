@@ -2,50 +2,9 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Worley Nerve Center
 
 Parameters:
-  VpcCIDR:
-    Type: String
-  VpcName:
-    Type: String
-  PublicSubnet1CIDR:
-    Type: String
-  PublicSubnet2CIDR:
-    Type: String
-  PrivateSubnet1CIDR:
-    Type: String
-  PrivateSubnet2CIDR:
-    Type: String
-  AvailabilityZone1:
-    Type: String
-  AvailabilityZone2:
-    Type: String
-  InternetGatewayIG:
-    Type: String
   S3BucketName:
     Type: String
-  repoNameUI:
-    Type: String
-  ECSClusterName:
-    Type: String
-  ECSTaskUI:
-    Type: String
-  ContainerNameUI:
-    Type: String
-  repoNameAPI:
-    Type: String
-  ECSTaskAPI:
-    Type: String
-  ContainerNameAPI:
-    Type: String
-  DesiredServiceCount:
-    Type: String
-  ALBName:
-    Type: String
-  ServiceNameUI:
-    Type: String
-  ALBNameAPI:
-    Type: String
-  ServiceNameAPI:
-    Type: String
+  
 
 Resources:
 
@@ -83,53 +42,4 @@ Resources:
                 - /*
       Bucket: !Ref S3BucketName
 
-  NestedVPCStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/vpc.yml'
-      Parameters:
-        VpcCIDR: !Ref VpcCIDR
-        VpcName: !Ref VpcName
-        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
-        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
-        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
-        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
-        AvailabilityZone1: !Ref AvailabilityZone1
-        AvailabilityZone2 : !Ref AvailabilityZone2
-        InternetGatewayIG: !Ref InternetGatewayIG
   
-  NestedFlowLogtack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/flowlogs.yml'
-      Parameters:
-        S3BucketName: !Ref S3BucketName
-        VpcName: !Ref VpcName
-
-
-  ECSStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: 'https://s3.amazonaws.com/worley-nc-deployment/ecs.yml'
-      Parameters:
-        repoNameUI: !Ref repoNameUI
-        ECSClusterName: !Ref ECSClusterName
-        ECSTaskUI: !Ref ECSTaskUI
-        ContainerNameAPI: !Ref ContainerNameAPI
-        repoNameAPI: !Ref repoNameAPI
-        ECSTaskAPI: !Ref ECSTaskAPI
-        ContainerNameUI: !Ref ContainerNameUI
-        VpcName: !Ref VpcName
-        ALBName: !Ref ALBName
-        DesiredServiceCount: !Ref DesiredServiceCount
-        ServiceNameUI: !Ref ServiceNameUI
-        ALBNameAPI: !Ref ALBNameAPI
-        ServiceNameAPI: !Ref ServiceNameAPI
-        
-
-Outputs:
-  S3BucketName:
-    Description: "The name of the S3 bucket."
-    Value: !Ref S3Bucket
-    Export:
-      Name: !Ref S3BucketName
